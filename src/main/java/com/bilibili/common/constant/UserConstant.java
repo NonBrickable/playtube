@@ -1,4 +1,4 @@
-package com.bilibili.common;
+package com.bilibili.common.constant;
 
 public class UserConstant {
     public static final String GENDER_MALE = "0";

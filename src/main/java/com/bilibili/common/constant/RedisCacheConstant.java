@@ -1,4 +1,4 @@
-package com.bilibili.common;
+package com.bilibili.common.constant;
 
 public class RedisCacheConstant {
     public static final String USER_LOGOUT = "user-logout_key:";

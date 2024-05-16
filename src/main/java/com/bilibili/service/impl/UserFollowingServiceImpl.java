@@ -1,15 +1,14 @@
 package com.bilibili.service.impl;
 
-import com.bilibili.common.UserConstant;
+import com.bilibili.common.constant.UserConstant;
 import com.bilibili.dao.UserFollowingDao;
-import com.bilibili.exception.ConditionException;
+import com.bilibili.common.exception.ConditionException;
 import com.bilibili.pojo.FollowingGroup;
 import com.bilibili.pojo.User;
 import com.bilibili.pojo.UserFollowing;
 import com.bilibili.pojo.UserInfo;
 import com.bilibili.service.UserFollowingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

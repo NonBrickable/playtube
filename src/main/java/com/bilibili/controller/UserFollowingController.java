@@ -1,15 +1,12 @@
 package com.bilibili.controller;
 
 import com.bilibili.common.JsonResponse;
-import com.bilibili.controller.support.UserSupport;
+import com.bilibili.common.UserContext;
 import com.bilibili.pojo.FollowingGroup;
 import com.bilibili.pojo.UserFollowing;
 import com.bilibili.service.FollowingGroupService;
 import com.bilibili.service.UserFollowingService;
-import com.bilibili.service.impl.FollowingGroupServiceImpl;
-import com.bilibili.service.impl.UserFollowingServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserFollowingController {
     private final UserFollowingService userFollowingService;
-    private final UserSupport userSupport;
     private final FollowingGroupService followingGroupService;
 
     /**
@@ -28,7 +24,7 @@ public class UserFollowingController {
      */
     @PostMapping("/add-following")
     public JsonResponse<String> addUserFollowings(@RequestBody UserFollowing userFollowing) {
-        long userId = userSupport.getCurrentUserId();
+        long userId = UserContext.getUserId();
         userFollowing.setUserId(userId);
         userFollowingService.addUserFollowings(userFollowing);
         return JsonResponse.success();
@@ -41,7 +37,7 @@ public class UserFollowingController {
      */
     @GetMapping("/following-list")
     public JsonResponse<List<FollowingGroup>> getUserFollowings() {
-        long userId = userSupport.getCurrentUserId();
+        long userId = UserContext.getUserId();
         List<FollowingGroup> list = userFollowingService.getUserFollowings(userId);
         return new JsonResponse<>(list);
     }
@@ -52,7 +48,7 @@ public class UserFollowingController {
      */
     @GetMapping("/fans-list")
     public JsonResponse<List<UserFollowing>> getUserFans() {
-        long userId = userSupport.getCurrentUserId();
+        long userId = UserContext.getUserId();
         List<UserFollowing> list = userFollowingService.getUserFans(userId);
         return new JsonResponse<>(list);
     }
@@ -64,7 +60,7 @@ public class UserFollowingController {
      */
     @PostMapping("/add-following-group")
     public JsonResponse<Long> addUserFollowingGroup(@RequestBody FollowingGroup followingGroup) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         followingGroup.setUserId(userId);
         Long id = followingGroupService.addUserFollowingGroup(followingGroup);
         return new JsonResponse<>(id);
@@ -77,7 +73,7 @@ public class UserFollowingController {
      */
     @DeleteMapping("/del-following-group")
     public JsonResponse<String> deleteUserFollowingGroup(@RequestBody FollowingGroup followingGroup){
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         followingGroup.setUserId(userId);
         followingGroupService.deleteUserFollowingGroup(followingGroup);
         return new JsonResponse<>("成功");
@@ -88,7 +84,7 @@ public class UserFollowingController {
      */
     @GetMapping("/following-group")
     public JsonResponse<List<FollowingGroup>> getFollowingGroupByUserId(){
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         List<FollowingGroup> followingGroupList = followingGroupService.getFollowingGroupByUserId(userId);
         return new JsonResponse<>(followingGroupList);
     }

@@ -1,4 +1,4 @@
-package com.bilibili.common;
+package com.bilibili.common.constant;
 
 //用户动态常量
 public class UserMomentsConstant {

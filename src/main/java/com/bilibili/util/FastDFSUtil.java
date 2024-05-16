@@ -1,6 +1,6 @@
 package com.bilibili.util;
 
-import com.bilibili.exception.ConditionException;
+import com.bilibili.common.exception.ConditionException;
 import com.github.tobato.fastdfs.domain.fdfs.FileInfo;
 import com.github.tobato.fastdfs.domain.fdfs.MetaData;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;

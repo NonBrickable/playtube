@@ -1,8 +1,9 @@
-package com.bilibili.aop;
+package com.bilibili.aspect;
 
-import com.bilibili.common.AuthRoleConstant;
-import com.bilibili.controller.support.UserSupport;
-import com.bilibili.exception.ConditionException;
+
+import com.bilibili.common.UserContext;
+import com.bilibili.common.constant.AuthRoleConstant;
+import com.bilibili.common.exception.ConditionException;
 import com.bilibili.pojo.UserMoments;
 import com.bilibili.pojo.auth.UserRole;
 import com.bilibili.service.impl.UserRoleServiceImpl;
@@ -12,7 +13,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.junit.jupiter.api.Order;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,18 +24,17 @@ import java.util.stream.Collectors;
 @Aspect
 @RequiredArgsConstructor
 public class DataLimitedAspect {
-    private final UserSupport userSupport;
     private final UserRoleServiceImpl userRoleService;
 
     //切点，指定注解
-    @Pointcut("@annotation(com.bilibili.annotation.DataLimited)")
+    @Pointcut("@annotation(com.bilibili.aspect.annotation.DataLimited)")
     public void check() {
 
     }
 
     @Before("check()")
     public void doBefore(JoinPoint joinPoint) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         List<UserRole> userRoleList = userRoleService.getUserRole(userId);
         Set roleCodeSet = userRoleList.stream().map(UserRole::getRoleCode).collect(Collectors.toSet());
         Object[] args = joinPoint.getArgs();

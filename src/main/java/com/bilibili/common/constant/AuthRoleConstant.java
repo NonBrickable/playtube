@@ -1,4 +1,4 @@
-package com.bilibili.common;
+package com.bilibili.common.constant;
 
 public class AuthRoleConstant {
     public static final String ROLE_LV0 = "Lv0";

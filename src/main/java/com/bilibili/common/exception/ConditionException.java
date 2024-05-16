@@ -1,4 +1,4 @@
-package com.bilibili.exception;
+package com.bilibili.common.exception;
 
 import lombok.Data;
 

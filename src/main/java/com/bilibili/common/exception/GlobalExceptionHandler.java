@@ -1,4 +1,4 @@
-package com.bilibili.exception;
+package com.bilibili.common.exception;
 
 import com.bilibili.common.JsonResponse;
 import lombok.extern.slf4j.Slf4j;

@@ -1,11 +1,11 @@
 package com.bilibili.service.impl;
 
-import com.bilibili.common.AuthRoleConstant;
+
+import com.bilibili.common.constant.AuthRoleConstant;
 import com.bilibili.dao.UserRoleDao;
 import com.bilibili.pojo.auth.UserRole;
 import com.bilibili.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

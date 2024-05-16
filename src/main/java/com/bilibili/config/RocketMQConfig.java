@@ -1,7 +1,7 @@
 package com.bilibili.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bilibili.common.UserMomentsConstant;
+import com.bilibili.common.constant.UserMomentsConstant;
 import com.bilibili.pojo.UserFollowing;
 import com.bilibili.pojo.UserMoments;
 import com.bilibili.service.impl.UserFollowingServiceImpl;

@@ -3,18 +3,14 @@ package com.bilibili.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bilibili.common.JsonResponse;
 import com.bilibili.common.PageResult;
-import com.bilibili.controller.support.UserSupport;
+import com.bilibili.common.UserContext;
 import com.bilibili.pojo.User;
 import com.bilibili.pojo.UserInfo;
 import com.bilibili.service.UserFollowingService;
 import com.bilibili.service.UserService;
-import com.bilibili.service.impl.UserFollowingServiceImpl;
-import com.bilibili.service.impl.UserServiceImpl;
 import com.bilibili.util.RSAUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +19,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserSupport userSupport;
     private final UserFollowingService userFollowingService;
 
     /**
@@ -52,7 +47,7 @@ public class UserController {
      */
     @GetMapping("/userInfo")
     public JsonResponse<User> getUserInfo() {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         User user = userService.getUserInfo(userId);
         return new JsonResponse<>(user);
     }
@@ -65,7 +60,7 @@ public class UserController {
      */
     @PutMapping("/updateUsers")
     public JsonResponse<String> updateUsers(@RequestBody User user) throws Exception {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         user.setId(userId);
         userService.updateUsers(user);
         return JsonResponse.success();
@@ -78,7 +73,7 @@ public class UserController {
      */
     @PutMapping("/updateUserInfos")
     public JsonResponse<String> updateUserInfos(@RequestBody UserInfo userInfo) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         userInfo.setUserId(userId);
         userService.updateUserInfos(userInfo);
         return JsonResponse.success();
@@ -93,7 +88,7 @@ public class UserController {
      */
     @GetMapping("/page-user")
     public JsonResponse<PageResult<UserInfo>> pageListUserInfos(@RequestParam Integer no, @RequestParam Integer size, String nick) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         JSONObject params = new JSONObject();
         params.put("no", no);
         params.put("size", size);
@@ -128,7 +123,7 @@ public class UserController {
     public JsonResponse<String> logout(HttpServletRequest request) {
         String accessToken = request.getHeader("accessToken");
         String refreshToken = request.getHeader("refreshToken");
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         userService.logout(accessToken, refreshToken, userId);
         return JsonResponse.success();
     }
@@ -142,7 +137,7 @@ public class UserController {
     @PostMapping("/new-token")
     public JsonResponse<Map<String,String>> refreshAccessToken(HttpServletRequest request) throws Exception {
         String refreshToken = request.getHeader("token");
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         Map<String,String> tokenMap = userService.refreshAccessToken(refreshToken,userId);
         return new JsonResponse<>(tokenMap);
     }

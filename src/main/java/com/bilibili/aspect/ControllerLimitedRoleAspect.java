@@ -1,8 +1,8 @@
-package com.bilibili.aop;
+package com.bilibili.aspect;
 
-import com.bilibili.controller.support.UserSupport;
-import com.bilibili.exception.ConditionException;
-import com.bilibili.annotation.ControllerLimitedRole;
+import com.bilibili.common.UserContext;
+import com.bilibili.common.exception.ConditionException;
+import com.bilibili.aspect.annotation.ControllerLimitedRole;
 import com.bilibili.pojo.auth.UserRole;
 import com.bilibili.service.impl.UserRoleServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.junit.jupiter.api.Order;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -24,11 +22,10 @@ import java.util.stream.Collectors;
 @Aspect
 @RequiredArgsConstructor
 public class ControllerLimitedRoleAspect {
-    private final UserSupport userSupport;
     private final UserRoleServiceImpl userRoleService;
 
     //切入点，指定注解标注的位置
-    @Pointcut("@annotation(com.bilibili.annotation.ControllerLimitedRole)")
+    @Pointcut("@annotation(com.bilibili.aspect.annotation.ControllerLimitedRole)")
     public void check() {
 
     }
@@ -37,7 +34,7 @@ public class ControllerLimitedRoleAspect {
     // 指定方法，获取角色编码
     @Before("check() && @annotation(controllerLimitedRole)")
     public void doBefore(JoinPoint joinPoint, ControllerLimitedRole controllerLimitedRole) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         //用户的角色集合
         List<UserRole> userRoleList = userRoleService.getUserRole(userId);
         //限制使用的角色集合

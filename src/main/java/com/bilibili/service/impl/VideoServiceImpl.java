@@ -2,12 +2,11 @@ package com.bilibili.service.impl;
 
 import com.bilibili.common.PageResult;
 import com.bilibili.dao.VideoDao;
-import com.bilibili.exception.ConditionException;
+import com.bilibili.common.exception.ConditionException;
 import com.bilibili.pojo.*;
 import com.bilibili.service.VideoService;
 import com.bilibili.util.FastDFSUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

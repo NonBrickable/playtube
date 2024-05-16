@@ -2,7 +2,7 @@ package com.bilibili.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.bilibili.common.UserMomentsConstant;
+import com.bilibili.common.constant.UserMomentsConstant;
 import com.bilibili.dao.UserMomentsDao;
 import com.bilibili.pojo.UserMoments;
 import com.bilibili.service.UserMomentsService;

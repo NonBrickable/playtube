@@ -2,17 +2,14 @@ package com.bilibili.controller;
 
 import com.bilibili.common.JsonResponse;
 import com.bilibili.common.PageResult;
-import com.bilibili.controller.support.UserSupport;
+import com.bilibili.common.UserContext;
 import com.bilibili.pojo.Video;
 import com.bilibili.pojo.VideoCoin;
 import com.bilibili.pojo.VideoCollection;
 import com.bilibili.pojo.VideoComment;
 import com.bilibili.service.VideoService;
-import com.bilibili.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -21,7 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class VideoController {
     private final VideoService videoService;
-    private final UserSupport userSupport;
 
     /**
      * 视频投稿
@@ -30,7 +26,7 @@ public class VideoController {
      */
     @PostMapping("/videos")
     public JsonResponse<String> addVideos(@RequestBody Video video) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         video.setUserId(userId);
         videoService.addVideos(video);
         return JsonResponse.success();
@@ -70,7 +66,7 @@ public class VideoController {
      */
     @PutMapping("/video-like")
     public JsonResponse<String> addVideoLike(@RequestParam Long videoId) {
-        long userId = userSupport.getCurrentUserId();
+        long userId = UserContext.getUserId();
         videoService.addVideoLike(videoId, userId);
         return JsonResponse.success();
     }
@@ -82,7 +78,7 @@ public class VideoController {
      */
     @DeleteMapping("/video-like-del")
     public JsonResponse<String> deleteVideoLike(@RequestParam Long videoId) {
-        long userId = userSupport.getCurrentUserId();
+        long userId = UserContext.getUserId();
         videoService.deleteVideoLike(videoId, userId);
         return JsonResponse.success();
     }
@@ -97,7 +93,7 @@ public class VideoController {
     public JsonResponse<Map<String, Object>> getVideoLikes(@RequestParam Long videoId) {
         Long userId = -1L;
         try {
-            userId = userSupport.getCurrentUserId();
+            userId = UserContext.getUserId();
         } catch (Exception e) {
         }
         Map<String, Object> result = videoService.getVideoLikes(userId, videoId);
@@ -112,7 +108,7 @@ public class VideoController {
      */
     @PostMapping("/video-collection")
     public JsonResponse<String> addVideoCollection(@RequestBody VideoCollection videoCollection) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         videoCollection.setUserId(userId);
         videoService.addVideoCollection(videoCollection);
         return JsonResponse.success();
@@ -126,7 +122,7 @@ public class VideoController {
      */
     @DeleteMapping("/video-collection-del")
     public JsonResponse<String> deleteVideoCollection(@RequestParam Long videoId) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         videoService.deleteVideoCollection(videoId, userId);
         return JsonResponse.success();
     }
@@ -140,7 +136,7 @@ public class VideoController {
     public JsonResponse<Map<String, Object>> getVideoCollections(@RequestParam Long videoId) {
         Long userId = -1L;
         try {
-            userId = userSupport.getCurrentUserId();
+            userId = UserContext.getUserId();
         } catch (Exception e) {
         }
         Map<String, Object> result = videoService.getVideoCollections(videoId, userId);
@@ -154,7 +150,7 @@ public class VideoController {
      */
     @PostMapping("/video-coins")
     public JsonResponse<String> addVideoCoins(@RequestBody VideoCoin videoCoin) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         videoCoin.setUserId(userId);
         videoService.addVideoCoins(videoCoin);
         return JsonResponse.success();
@@ -169,7 +165,7 @@ public class VideoController {
     public JsonResponse<Map<String, Object>> getVideoCoins(@RequestParam Long videoId) {
         Long userId = -1L;
         try {
-            userId = userSupport.getCurrentUserId();
+            userId = UserContext.getUserId();
         } catch (Exception e) {
         }
         Map<String, Object> result = videoService.getVideoCoins(videoId, userId);
@@ -183,7 +179,7 @@ public class VideoController {
      */
     @PostMapping("/video-comment")
     public JsonResponse<String> addVideoComment(@RequestBody VideoComment videoComment) {
-        Long userId = userSupport.getCurrentUserId();
+        Long userId = UserContext.getUserId();
         videoService.addVideoComment(videoComment, userId);
         return JsonResponse.success();
     }
