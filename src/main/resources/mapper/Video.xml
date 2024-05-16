@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 为根元素节点， 一个namespace对应一个dao -->
+<mapper namespace="com.bilibili.dao.VideoDao">
+    <insert id="addVideos" parameterType="com.bilibili.pojo.Video" useGeneratedKeys="true" keyProperty="id">
+        insert into t_video(user_id, url, thumbnail, title, type, duration, area, description, create_time)
+        values (#{userId},
+                #{url},
+                #{thumbnail},
+                #{title},
+                #{type},
+                #{duration},
+                #{area},
+                #{description},
+                now());
+    </insert>
+    <insert id="batchAddVideoTags" parameterType="list">
+        insert into t_video_tag(video_id, tag_id, create_time)
+        values
+        <foreach collection="list" item="videoTag" separator=",">
+            (#{videoTag.videoId},#{videoTag.tagId},now())
+        </foreach>
+    </insert>
+    <select id="pageCountVideos" parameterType="map" resultType="integer">
+        select count(1)
+        from t_video
+        where 1 = 1
+        <if test="area != null and area != ''">
+            and area = #{area}
+        </if>
+    </select>
+    <select id="pageListVideos" parameterType="map" resultType="com.bilibili.pojo.Video">
+        select *
+        from t_video
+        where 1 = 1
+        <if test="area != null and area != ''">
+            area = #{area}
+        </if>
+        order by id desc
+        limit #{start},#{limit}
+    </select>
+    <select id="getVideoById" parameterType="long" resultType="com.bilibili.pojo.Video">
+        select *
+        from t_video
+        where id = #{videoId}
+    </select>
+    <select id="getVideoLikeByVideoIdAndUserId" resultType="com.bilibili.pojo.VideoLike">
+        select *
+        from t_video_like
+        <where>
+            <if test="videoId != null and videoId != ''">
+                video_id = #{videoId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <insert id="addVideoLike">
+        insert into t_video_like(user_id, video_id, create_time)
+        values (#{userId}, #{videoId}, now())
+    </insert>
+    <delete id="deleteVideoLike">
+        delete
+        from t_video_like
+        where user_id = #{userId}
+          and video_id = #{videoId}
+    </delete>
+    <select id="getVideoLikes" parameterType="long" resultType="long">
+        select count(1)
+        from t_video_like
+        where video_id = #{videoId}
+    </select>
+    <delete id="deleteVideoCollection">
+        delete
+        from t_video_collection
+        where video_id = #{videoId}
+          and user_id = #{userId};
+    </delete>
+    <insert id="addVideoCollection">
+        insert into t_video_collection(video_id, user_id, group_id, create_time)
+        values (#{videoId}, #{userId}, #{groupId}, now())
+    </insert>
+    <select id="getVideoCollections" parameterType="long" resultType="long">
+        select count(1)
+        from t_video_collection
+        where video_id = #{videoId}
+    </select>
+    <select id="getVideoCollectionByVideoIdAndUserId" resultType="com.bilibili.pojo.VideoCollection">
+        select *
+        from t_video_collection
+        where video_id = #{videoId}
+          and user_id = #{userId}
+    </select>
+    <select id="getVideoCoinByVideoIdAndUserId" resultType="com.bilibili.pojo.VideoCoin">
+        select *
+        from t_video_coin
+        where user_id = #{userId}
+          and video_id = #{videoId}
+    </select>
+    <insert id="addVideoCoins" parameterType="com.bilibili.pojo.VideoCoin">
+        insert into t_video_coin (user_id,video_id,amount,create_time)
+        values (#{userId},#{videoId},#{amount},now())
+    </insert>
+    <update id="updateVideoCoin" parameterType="com.bilibili.pojo.VideoCoin">
+        update t_video_coin
+        set amount      = #{amount},
+            update_time = now()
+        where user_id = #{userId}
+          and video_id = #{videoId}
+    </update>
+    <select id="getVideoCoins" parameterType="long" resultType="long">
+        select sum(amount)
+        from t_video_coin
+        where video_id = #{videoId}
+    </select>
+    <insert id="addVideoComment">
+        insert into t_video_comment(video_id, user_id, comment, reply_user_id, root_id, create_time)
+        values (#{videoId}, #{userId}, #{comment}, #{replyUserId}, #{rootId}, now())
+    </insert>
+    <select id="pageCountVideoComment" parameterType="int" resultType="int">
+        select count(*)
+        from t_video_comment
+        where video_id = #{videoId}
+          and root_id is null
+    </select>
+    <select id="pageListVideoComments" parameterType="map" resultType="com.bilibili.pojo.VideoComment">
+        select *
+        from t_video_comment
+        where video_id = #{videoId}
+          and root_id is null
+        order by id desc
+            limit #{start}, #{limit}
+    </select>
+    <select id="batchGetChildVideoComments" parameterType="list" resultType="com.bilibili.pojo.VideoComment">
+        select *
+        from t_video_comment
+        where root_id in
+        <foreach collection="rootIdList" open="(" close=")" separator="," item="rootId">
+            #{rootId}
+        </foreach>
+    </select>
+</mapper>
