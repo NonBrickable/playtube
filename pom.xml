@@ -5,8 +5,8 @@
     <groupId>com.lv.bilibili</groupId>
     <artifactId>bilibili</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bilibili-refactor</name>
-    <description>bilibili-refactor</description>
+    <name>bilibili</name>
+    <description>bilibili</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -134,7 +134,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.lv.bilibili.bilibilirefactor.BilibiliRefactorApplication</mainClass>
+                    <mainClass>com.lv.bilibili.bilibili.BilibiliApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

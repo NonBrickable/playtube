@@ -1,8 +1,5 @@
 package com.bilibili;
-
-
-
-import com.bilibili.service.websocket.WebSocketService;
+import com.bilibili.controller.websocket.WebSocketService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -11,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication(scanBasePackages = "com.bilibili")
+@SpringBootApplication
 @EnableMBeanExport
 @EnableAsync
 @EnableScheduling

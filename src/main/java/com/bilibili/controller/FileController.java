@@ -2,6 +2,8 @@ package com.bilibili.controller;
 
 import com.bilibili.common.JsonResponse;
 import com.bilibili.service.FileService;
+import com.bilibili.service.impl.FileServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@RequiredArgsConstructor
 public class FileController {
-    @Autowired
-    private FileService fileService;
+    private final FileService fileService;
 
 
     /**

@@ -1,4 +1,4 @@
-package com.bilibili.pojo.annotation;
+package com.bilibili.annotation;
 
 import org.springframework.stereotype.Component;
 

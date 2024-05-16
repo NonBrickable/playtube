@@ -8,6 +8,8 @@ import com.bilibili.pojo.VideoCoin;
 import com.bilibili.pojo.VideoCollection;
 import com.bilibili.pojo.VideoComment;
 import com.bilibili.service.VideoService;
+import com.bilibili.service.impl.VideoServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class VideoController {
-    @Autowired
-    private VideoService videoService;
-    @Autowired
-    private UserSupport userSupport;
+    private final VideoService videoService;
+    private final UserSupport userSupport;
 
     /**
      * 视频投稿
-     *
      * @param video
      * @return
      */
@@ -38,7 +38,6 @@ public class VideoController {
 
     /**
      * 瀑布流分页查询
-     *
      * @param size 本页的视频数量
      * @param no   本页的编号
      * @param area 分区类型
@@ -50,6 +49,13 @@ public class VideoController {
         return new JsonResponse<>(result);
     }
 
+    /**
+     * 视频分片在线播放
+     * @param request
+     * @param response
+     * @param path
+     * @throws Exception
+     */
     @GetMapping("/video-slices")
     public void viewVideosOnlineBySlices(HttpServletRequest request,
                                          HttpServletResponse response,
@@ -58,8 +64,7 @@ public class VideoController {
     }
 
     /**
-     * 点赞视频
-     *
+     * 视频点赞
      * @param videoId
      * @return
      */
@@ -72,7 +77,6 @@ public class VideoController {
 
     /**
      * 取消点赞视频
-     *
      * @param videoId
      * @return
      */
@@ -129,7 +133,6 @@ public class VideoController {
 
     /**
      * 查看视频收藏数量
-     *
      * @param videoId
      * @return
      */
@@ -146,7 +149,6 @@ public class VideoController {
 
     /**
      * 视频投币
-     *
      * @param videoCoin
      * @return
      */
@@ -160,7 +162,6 @@ public class VideoController {
 
     /**
      * 查看视频投币数量
-     *
      * @param videoId
      * @return
      */
@@ -177,7 +178,6 @@ public class VideoController {
 
     /**
      * 添加视频评论
-     *
      * @param videoComment
      * @return
      */

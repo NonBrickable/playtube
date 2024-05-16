@@ -1,12 +1,11 @@
 package com.bilibili.config;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.bilibili.common.UserMomentsConstant;
 import com.bilibili.pojo.UserFollowing;
 import com.bilibili.pojo.UserMoments;
-import com.bilibili.service.UserFollowingService;
-import com.bilibili.service.websocket.WebSocketService;
+import com.bilibili.service.impl.UserFollowingServiceImpl;
+import com.bilibili.controller.websocket.WebSocketService;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -31,7 +30,7 @@ public class RocketMQConfig {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
-    private UserFollowingService userFollowingService;
+    private UserFollowingServiceImpl userFollowingService;
 
     @Bean("momentProducer")
     public DefaultMQProducer momentProducer() throws Exception {

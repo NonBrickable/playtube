@@ -8,9 +8,11 @@ import com.bilibili.pojo.User;
 import com.bilibili.pojo.UserInfo;
 import com.bilibili.service.UserFollowingService;
 import com.bilibili.service.UserService;
+import com.bilibili.service.impl.UserFollowingServiceImpl;
+import com.bilibili.service.impl.UserServiceImpl;
 import com.bilibili.util.RSAUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,20 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserSupport userSupport;
-
-    @Autowired
-    private UserFollowingService userFollowingService;
+    private final UserService userService;
+    private final UserSupport userSupport;
+    private final UserFollowingService userFollowingService;
 
     /**
      * 获取RSA公钥
-     *
      * @return
      */
     @GetMapping("/rsa-pks")
@@ -47,13 +43,11 @@ public class UserController {
      */
     @PostMapping("/register")
     public JsonResponse<String> addUser(@RequestBody User user) {
-        userService.addUser(user);
-        return JsonResponse.success();
+        return userService.addUser(user);
     }
 
     /**
      * 获取用户信息
-     *
      * @return
      */
     @GetMapping("/userInfo")
@@ -65,7 +59,6 @@ public class UserController {
 
     /**
      * 更新用户基本信息
-     *
      * @param user
      * @return
      * @throws Exception
@@ -80,7 +73,6 @@ public class UserController {
 
     /**
      * 更新用户详细信息
-     *
      * @param userInfo
      * @return
      */
@@ -94,7 +86,6 @@ public class UserController {
 
     /**
      * 分页查询用户信息
-     *
      * @param no   当前页码
      * @param size 当前页有多少条数据
      * @param nick 昵称
@@ -118,7 +109,6 @@ public class UserController {
 
     /**
      * 双令牌登录
-     *
      * @param user
      * @return
      * @throws Exception
@@ -131,7 +121,6 @@ public class UserController {
 
     /**
      * 登出
-     *
      * @param request
      * @return
      */
@@ -146,7 +135,6 @@ public class UserController {
 
     /**
      * 获取新的accessToken————流程：accessToken过期，前端调用生成该接口localhost:
-     *
      * @param request
      * @return
      * @throws Exception

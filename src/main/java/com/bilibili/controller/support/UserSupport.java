@@ -3,6 +3,7 @@ package com.bilibili.controller.support;
 import com.bilibili.common.RedisCacheConstant;
 import com.bilibili.exception.ConditionException;
 import com.bilibili.util.TokenUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -12,9 +13,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
+@RequiredArgsConstructor
 public class UserSupport {
-    @Autowired
-    private RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String,String> redisTemplate;
 
     /**
      * 抓取前端请求，验证token并返回userId

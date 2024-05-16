@@ -1,10 +1,11 @@
-package com.bilibili.controller.aspect;
+package com.bilibili.aop;
 
 import com.bilibili.controller.support.UserSupport;
 import com.bilibili.exception.ConditionException;
-import com.bilibili.pojo.annotation.ControllerLimitedRole;
+import com.bilibili.annotation.ControllerLimitedRole;
 import com.bilibili.pojo.auth.UserRole;
-import com.bilibili.service.UserRoleService;
+import com.bilibili.service.impl.UserRoleServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -21,14 +22,13 @@ import java.util.stream.Collectors;
 @Order(1)
 @Component
 @Aspect
+@RequiredArgsConstructor
 public class ControllerLimitedRoleAspect {
-    @Autowired
-    private UserSupport userSupport;
-    @Autowired
-    private UserRoleService userRoleService;
+    private final UserSupport userSupport;
+    private final UserRoleServiceImpl userRoleService;
 
     //切入点，指定注解标注的位置
-    @Pointcut("@annotation(com.bilibili.pojo.annotation.ControllerLimitedRole)")
+    @Pointcut("@annotation(com.bilibili.annotation.ControllerLimitedRole)")
     public void check() {
 
     }

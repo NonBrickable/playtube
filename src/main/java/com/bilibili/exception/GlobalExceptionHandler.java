@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 //全局异常处理类,返回数据错误码给前端
-
 //@ControllerAdvice注解是Spring MVC中一个全局的异常处理注解。它可以应用到类上。
 // 用来处理控制器中所有带有@RequestMapping注解的方法抛出的异常。
 // 这样可以避免在每个控制器中都进行重复的异常处理。

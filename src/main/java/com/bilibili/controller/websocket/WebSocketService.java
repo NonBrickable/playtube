@@ -1,4 +1,4 @@
-package com.bilibili.service.websocket;
+package com.bilibili.controller.websocket;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;

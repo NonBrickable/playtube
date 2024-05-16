@@ -6,6 +6,8 @@ import com.bilibili.pojo.User;
 import com.bilibili.pojo.UserInfo;
 import com.bilibili.pojo.UserMoments;
 import com.bilibili.service.UserMomentsService;
+import com.bilibili.service.impl.UserMomentsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +16,14 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UserMomentsController {
-    @Autowired
-    private UserSupport userSupport;
-    @Autowired
-    private UserMomentsService userMomentsService;
-    @Autowired
-    private RedisTemplate<String,String> redisTemplate;
+    private final UserSupport userSupport;
+    private final UserMomentsService userMomentsService;
+    private final RedisTemplate<String,String> redisTemplate;
 
     /**
      * 新增动态
-     *
      * @param userMoments
      * @return
      * @throws Exception
@@ -49,21 +48,5 @@ public class UserMomentsController {
         Long userId = userSupport.getCurrentUserId();
         List<UserMoments> list = userMomentsService.getUserSubscribedMoments(userId,start,end);
         return new JsonResponse<>(list);
-    }
-
-    @PostMapping("/abc")
-    public JsonResponse<String> test(){
-        User user = new User();
-        user.setCreateTime(new Date());
-        user.setId(1L);
-        user.setSalt("jsioghsiuhg9opjgiowsjgiohsiughsioghisohgioshgoishjgios");
-        user.setEmail("husihfgiushhsioghjsioghjiosgjhiosjg");
-        user.setUserInfo(new UserInfo());
-        redisTemplate.opsForList().leftPush("key",user.toString());
-        List<String> list = redisTemplate.opsForList().range("key",0,3);
-        for(String s : list){
-            System.out.println(s);
-        }
-        return JsonResponse.success();
     }
 }

@@ -9,8 +9,10 @@ spring:
             max-request-size: 30MB
             max-file-size: 30MB
     redis:
-        host: 43.138.5.79
+        host: 8.130.154.240
         port: 6379
+        password: 123456
+
 #rocketmq
 rocketmq:
     nameServer: 43.138.5.79:9876
@@ -26,11 +28,14 @@ fdfs:
         height: 150
         width: 150
     #Tracker服务，确保tracker storage nginx已经启动
-    tracker-list: 39.107.54.180:22122
+    tracker-list: 43.138.5.79:22122
     pool:
         jmx-enabled: false
     http:
-        storage-addr: 6.6.6.6
+        storage-addr: http://43.138.5.79:8888/group1/
+
 mybatis:
     mapper-locations: classpath:mapper/*.xml
     type-aliases-package: com.bilibili.dao
+    configuration:
+        map-underscore-to-camel-case: true

@@ -6,19 +6,20 @@ import com.bilibili.pojo.FollowingGroup;
 import com.bilibili.pojo.UserFollowing;
 import com.bilibili.service.FollowingGroupService;
 import com.bilibili.service.UserFollowingService;
+import com.bilibili.service.impl.FollowingGroupServiceImpl;
+import com.bilibili.service.impl.UserFollowingServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UserFollowingController {
-    @Autowired
-    private UserFollowingService userFollowingService;
-    @Autowired
-    private UserSupport userSupport;
-    @Autowired
-    private FollowingGroupService followingGroupService;
+    private final UserFollowingService userFollowingService;
+    private final UserSupport userSupport;
+    private final FollowingGroupService followingGroupService;
 
     /**
      * 新增关注用户

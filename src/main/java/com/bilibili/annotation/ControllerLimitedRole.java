@@ -1,4 +1,4 @@
-package com.bilibili.pojo.annotation;
+package com.bilibili.annotation;
 
 import org.springframework.stereotype.Component;
 
@@ -15,9 +15,9 @@ import java.lang.annotation.*;
 @Documented
 @Component
 public @interface ControllerLimitedRole {
+
     /**
      * 限制调用角色的唯一编码列表
-     *
      * @return
      */
     String[] limitedRoleCodeList() default {};
