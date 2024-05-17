@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- mapper 为根元素节点， 一个namespace对应一个dao -->
-<mapper namespace="com.bilibili.dao.BarrageDao">
-    <insert id="addBarrage" parameterType="com.bilibili.pojo.Barrage">
+<mapper namespace="com.playtube.dao.BarrageDao">
+    <insert id="addBarrage" parameterType="com.playtube.pojo.Barrage">
         insert into t_barrage(video_id,user_id,content,occur_time,create_time)
         values (#{videoId},#{userId},#{content},#{occurTime},now())
     </insert>
-    <select id="getBarrages" parameterType="map" resultType="com.bilibili.pojo.Barrage">
+    <select id="getBarrages" parameterType="map" resultType="com.playtube.pojo.Barrage">
         select *
         from t_barrage
         where video_id = #{videoId}

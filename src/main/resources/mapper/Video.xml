@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- mapper 为根元素节点， 一个namespace对应一个dao -->
-<mapper namespace="com.bilibili.dao.VideoDao">
-    <insert id="addVideos" parameterType="com.bilibili.pojo.Video" useGeneratedKeys="true" keyProperty="id">
+<mapper namespace="com.playtube.dao.VideoDao">
+    <insert id="addVideos" parameterType="com.playtube.pojo.Video" useGeneratedKeys="true" keyProperty="id">
         insert into t_video(user_id, url, thumbnail, title, type, duration, area, description, create_time)
         values (#{userId},
                 #{url},
@@ -32,7 +32,7 @@
             and area = #{area}
         </if>
     </select>
-    <select id="pageListVideos" parameterType="map" resultType="com.bilibili.pojo.Video">
+    <select id="pageListVideos" parameterType="map" resultType="com.playtube.pojo.Video">
         select *
         from t_video
         where 1 = 1
@@ -42,12 +42,12 @@
         order by id desc
         limit #{start},#{limit}
     </select>
-    <select id="getVideoById" parameterType="long" resultType="com.bilibili.pojo.Video">
+    <select id="getVideoById" parameterType="long" resultType="com.playtube.pojo.Video">
         select *
         from t_video
         where id = #{videoId}
     </select>
-    <select id="getVideoLikeByVideoIdAndUserId" resultType="com.bilibili.pojo.VideoLike">
+    <select id="getVideoLikeByVideoIdAndUserId" resultType="com.playtube.pojo.VideoLike">
         select *
         from t_video_like
         <where>
@@ -89,23 +89,23 @@
         from t_video_collection
         where video_id = #{videoId}
     </select>
-    <select id="getVideoCollectionByVideoIdAndUserId" resultType="com.bilibili.pojo.VideoCollection">
+    <select id="getVideoCollectionByVideoIdAndUserId" resultType="com.playtube.pojo.VideoCollection">
         select *
         from t_video_collection
         where video_id = #{videoId}
           and user_id = #{userId}
     </select>
-    <select id="getVideoCoinByVideoIdAndUserId" resultType="com.bilibili.pojo.VideoCoin">
+    <select id="getVideoCoinByVideoIdAndUserId" resultType="com.playtube.pojo.VideoCoin">
         select *
         from t_video_coin
         where user_id = #{userId}
           and video_id = #{videoId}
     </select>
-    <insert id="addVideoCoins" parameterType="com.bilibili.pojo.VideoCoin">
+    <insert id="addVideoCoins" parameterType="com.playtube.pojo.VideoCoin">
         insert into t_video_coin (user_id,video_id,amount,create_time)
         values (#{userId},#{videoId},#{amount},now())
     </insert>
-    <update id="updateVideoCoin" parameterType="com.bilibili.pojo.VideoCoin">
+    <update id="updateVideoCoin" parameterType="com.playtube.pojo.VideoCoin">
         update t_video_coin
         set amount      = #{amount},
             update_time = now()
@@ -127,7 +127,7 @@
         where video_id = #{videoId}
           and root_id is null
     </select>
-    <select id="pageListVideoComments" parameterType="map" resultType="com.bilibili.pojo.VideoComment">
+    <select id="pageListVideoComments" parameterType="map" resultType="com.playtube.pojo.VideoComment">
         select *
         from t_video_comment
         where video_id = #{videoId}
@@ -135,7 +135,7 @@
         order by id desc
             limit #{start}, #{limit}
     </select>
-    <select id="batchGetChildVideoComments" parameterType="list" resultType="com.bilibili.pojo.VideoComment">
+    <select id="batchGetChildVideoComments" parameterType="list" resultType="com.playtube.pojo.VideoComment">
         select *
         from t_video_comment
         where root_id in

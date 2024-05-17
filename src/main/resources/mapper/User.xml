@@ -4,35 +4,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- mapper 为根元素节点， 一个namespace对应一个dao -->
-<mapper namespace="com.bilibili.dao.UserDao">
+<mapper namespace="com.playtube.dao.UserDao">
     <!--id推荐使用接口中的方法，resultType使用sql的java对象的全限定名称-->
-    <select id="getUserByphone" parameterType="java.lang.String" resultType="com.bilibili.pojo.User">
+    <select id="getUserByphone" parameterType="java.lang.String" resultType="com.playtube.pojo.User">
         select *
         from t_user
         where phone = #{phone}
     </select>
 
-    <insert id="addUser" parameterType="com.bilibili.pojo.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addUser" parameterType="com.playtube.pojo.User" useGeneratedKeys="true" keyProperty="id">
         insert into t_user(phone, email, password, salt, create_time)
         values (#{phone}, #{email}, #{password}, #{salt}, now())
     </insert>
 
-    <insert id="addUserInfo" parameterType="com.bilibili.pojo.UserInfo">
+    <insert id="addUserInfo" parameterType="com.playtube.pojo.UserInfo">
         insert into t_user_info(user_id, nick, avatar, sign, gender, birth, create_time)
         values (#{userId}, #{nick}, #{avatar}, #{sign}, #{gender}, #{birth}, now())
     </insert>
 
-    <select id="getUserById" parameterType="long" resultType="com.bilibili.pojo.User">
+    <select id="getUserById" parameterType="long" resultType="com.playtube.pojo.User">
         select *
         from t_user
         where id = #{id}
     </select>
-    <select id="getUserInfoById" parameterType="long" resultType="com.bilibili.pojo.UserInfo">
+    <select id="getUserInfoById" parameterType="long" resultType="com.playtube.pojo.UserInfo">
         select *
         from t_user_info
         where user_id = #{userId}
     </select>
-    <update id="updateUsers" parameterType="com.bilibili.pojo.User">
+    <update id="updateUsers" parameterType="com.playtube.pojo.User">
         update t_user
         set
         <if test="phone != null and phone != ''">
@@ -47,7 +47,7 @@
         update_time = now()
         where id = #{id}
     </update>
-    <update id="updateUserInfos" parameterType="com.bilibili.pojo.UserInfo">
+    <update id="updateUserInfos" parameterType="com.playtube.pojo.UserInfo">
         update
         t_user_info
         set
@@ -69,7 +69,7 @@
         update_time = now()
         where user_id = #{userId}
     </update>
-    <select id="getUserInfoByUserIds" resultType="com.bilibili.pojo.UserInfo">
+    <select id="getUserInfoByUserIds" resultType="com.playtube.pojo.UserInfo">
         select *
         from t_user_info
         where
@@ -89,7 +89,7 @@
             and nick like '%${nick}%'
         </if>
     </select>
-    <select id="pageListUserInfos" parameterType="map" resultType="com.bilibili.pojo.UserInfo">
+    <select id="pageListUserInfos" parameterType="map" resultType="com.playtube.pojo.UserInfo">
         select *
         from t_user_info
         where 1 = 1
@@ -99,7 +99,7 @@
         order by id desc
         limit #{start},#{limit}
     </select>
-    <select id="batchGetUserInfo" parameterType="java.util.Set" resultType="com.bilibili.pojo.UserInfo">
+    <select id="batchGetUserInfo" parameterType="java.util.Set" resultType="com.playtube.pojo.UserInfo">
         select *
         from t_user_info
         where user_id in

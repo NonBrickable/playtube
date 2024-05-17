@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- mapper 为根元素节点， 一个namespace对应一个dao -->
-<mapper namespace="com.bilibili.dao.AuthRoleMenuDao">
-    <resultMap id="AuthMenuResultMap" type="com.bilibili.pojo.auth.AuthRoleMenu">
+<mapper namespace="com.playtube.dao.AuthRoleMenuDao">
+    <resultMap id="AuthMenuResultMap" type="com.playtube.pojo.auth.AuthRoleMenu">
         <id column="id" property="id"/>
         <id column="role_id" property="roleId"/>
         <id column="menu_id" property="menuId"/>
-        <association property="authMenu" javaType="com.bilibili.pojo.auth.AuthMenu">
+        <association property="authMenu" javaType="com.playtube.pojo.auth.AuthMenu">
             <id column="name" property="name"/>
             <id column="code" property="code"/>
         </association>
