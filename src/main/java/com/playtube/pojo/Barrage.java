@@ -1,10 +1,14 @@
 package com.playtube.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Barrage {
     private Long id;
     private Long videoId;

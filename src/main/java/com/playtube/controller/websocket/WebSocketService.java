@@ -1,5 +1,6 @@
 package com.playtube.controller.websocket;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.playtube.common.constant.UserMomentsConstant;
@@ -7,7 +8,6 @@ import com.playtube.pojo.Barrage;
 import com.playtube.service.BarrageService;
 import com.playtube.util.RocketMQUtil;
 import com.playtube.util.TokenUtil;
-import io.netty.util.internal.StringUtil;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
@@ -17,6 +17,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -182,6 +183,7 @@ public class WebSocketService {
     //定时向前端推送在线人数
     @Scheduled(fixedRate = 5000)
     public void noticeOnlineCount() throws IOException {
+        if(videoId == null || ObjectUtil.isEmpty(WEBSOCKET_MAP.get(videoId))) return;
         for (Map.Entry<String, WebSocketService> entry : WebSocketService.WEBSOCKET_MAP.get(videoId).entrySet()) {
             WebSocketService webSocketService = entry.getValue();
             if (webSocketService.getSession().isOpen()) {
