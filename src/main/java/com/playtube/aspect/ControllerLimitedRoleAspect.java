@@ -4,6 +4,7 @@ import com.playtube.common.UserContext;
 import com.playtube.common.exception.ConditionException;
 import com.playtube.aspect.annotation.ControllerLimitedRole;
 import com.playtube.pojo.auth.UserRole;
+import com.playtube.service.UserRoleService;
 import com.playtube.service.impl.UserRoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Aspect
 @RequiredArgsConstructor
 public class ControllerLimitedRoleAspect {
-    private final UserRoleServiceImpl userRoleService;
+    private final UserRoleService userRoleService;
 
     //切入点，指定注解标注的位置
     @Pointcut("@annotation(com.playtube.aspect.annotation.ControllerLimitedRole)")

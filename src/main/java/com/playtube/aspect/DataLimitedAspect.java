@@ -6,6 +6,7 @@ import com.playtube.common.constant.AuthRoleConstant;
 import com.playtube.common.exception.ConditionException;
 import com.playtube.pojo.UserMoments;
 import com.playtube.pojo.auth.UserRole;
+import com.playtube.service.UserRoleService;
 import com.playtube.service.impl.UserRoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Aspect
 @RequiredArgsConstructor
 public class DataLimitedAspect {
-    private final UserRoleServiceImpl userRoleService;
+    private final UserRoleService userRoleService;
 
     //切点，指定注解
     @Pointcut("@annotation(com.playtube.aspect.annotation.DataLimited)")

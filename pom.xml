@@ -4,14 +4,25 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lv.playtube</groupId>
     <artifactId>playtube</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>playtube</name>
     <description>playtube</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.6.13</spring-boot.version>
+        <spring-boot.version>3.0.7</spring-boot.version>
+        <mybatis-spring-boot-starter.version>3.0.2</mybatis-spring-boot-starter.version>
+        <rocketmq-client.version>4.9.1</rocketmq-client.version>
+        <rocketmq-spring-boot-starter.version>2.2.2</rocketmq-spring-boot-starter.version>
+        <fastdfs-client.version>1.27.2</fastdfs-client.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
+        <commons-codec.version>1.14</commons-codec.version>
+        <java-jwt.version>3.19.2</java-jwt.version>
+        <fastjson.version>1.2.79</fastjson.version>
+        <junit-jupiter.version>5.9.3</junit-jupiter.version>
+        <transmittable-thread-local.version>2.13.0</transmittable-thread-local.version>
+        <hutool-all.vesion>5.4.3</hutool-all.vesion>
     </properties>
 
     <dependencies>
@@ -22,7 +33,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.2.2</version>
+            <version>${mybatis-spring-boot-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -33,23 +44,18 @@
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
-            <version>4.9.1</version>
+            <version>${rocketmq-client.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>2.2.2</version>
+            <version>${rocketmq-spring-boot-starter.version}</version>
         </dependency>
 
         <!--Redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.tobato</groupId>
-            <artifactId>fastdfs-client</artifactId>
-            <version>1.27.2</version>
         </dependency>
 
         <!--WebSocket-->
@@ -62,28 +68,28 @@
         <dependency>
             <groupId>com.github.tobato</groupId>
             <artifactId>fastdfs-client</artifactId>
-            <version>1.27.2</version>
+            <version>${fastdfs-client.version}</version>
         </dependency>
 
         <!--mysql驱动-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
 
         <!--加解密工具-->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.14</version>
+            <version>${commons-codec.version}</version>
         </dependency>
 
         <!--   jwt依赖-->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.19.2</version>
+            <version>${java-jwt.version}</version>
         </dependency>
 
         <!--开发工具-->
@@ -95,20 +101,25 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.79</version>
+            <version>${fastjson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all.vesion}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
-            <version>2.13.0</version>
+            <version>${transmittable-thread-local.version}</version>
         </dependency>
-
-
 
     </dependencies>
     <dependencyManagement>
@@ -130,27 +141,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>com.lv.playtube.PlayTubeApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

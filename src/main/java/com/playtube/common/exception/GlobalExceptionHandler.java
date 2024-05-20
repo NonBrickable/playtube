@@ -1,6 +1,7 @@
 package com.playtube.common.exception;
 
 import com.playtube.common.JsonResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 
 //全局异常处理类,返回数据错误码给前端
 //@ControllerAdvice注解是Spring MVC中一个全局的异常处理注解。它可以应用到类上。
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public JsonResponse<String> commonExceptionHandler(HttpServletRequest request,Exception e){
+    public JsonResponse<String> commonExceptionHandler(HttpServletRequest request, Exception e){
         String errorMsg=e.getMessage();
         log.error(errorMsg);
         if(e instanceof ConditionException){

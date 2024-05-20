@@ -4,6 +4,7 @@ package com.playtube.service.impl;
 import com.playtube.common.constant.AuthRoleConstant;
 import com.playtube.dao.UserRoleDao;
 import com.playtube.pojo.auth.UserRole;
+import com.playtube.service.AuthRoleService;
 import com.playtube.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRoleServiceImpl implements UserRoleService {
     private final UserRoleDao userRoleDao;
-    private final AuthRoleServiceImpl authRoleService;
+    private final AuthRoleService authRoleService;
 
     /**
      * 获取useId对应的所有角色
      * @param userId
      * @return
      */
-    public List<UserRole> getUserRole(long userId) {
+    public List<UserRole> getUserRole(Long userId) {
         List<UserRole> userRoleList = userRoleDao.getUserRole(userId);
         return userRoleList;
     }

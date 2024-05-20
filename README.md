@@ -52,10 +52,11 @@ playtube是一个基于SpringBoot框架的视频弹幕项目，包括视频上�
 
     ```yaml
     spring:
-      redis:
-        host: localhost
-        port: 6379
-        password: yourpassword
+        data:
+            redis:
+                host: 8.130.154.240
+                password: 123456
+                port: 6379
     ```
     
 4. **配置RocketMQ**

@@ -21,4 +21,10 @@ public interface BarrageService {
      * @param barrage
      */
     void addBarrageToRedis(Barrage barrage);
+
+    /**
+     * 异步保存到数据库
+     * @param barrage
+     */
+    void asyncAddBarrage(Barrage barrage);
 }

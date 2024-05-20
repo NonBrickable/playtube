@@ -9,9 +9,10 @@ import com.playtube.pojo.UserInfo;
 import com.playtube.service.UserFollowingService;
 import com.playtube.service.UserService;
 import com.playtube.util.RSAUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 import java.util.Map;
 

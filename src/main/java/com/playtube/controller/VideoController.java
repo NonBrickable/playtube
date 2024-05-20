@@ -8,10 +8,11 @@ import com.playtube.pojo.VideoCoin;
 import com.playtube.pojo.VideoCollection;
 import com.playtube.pojo.VideoComment;
 import com.playtube.service.VideoService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.Map;
 
 @RestController

@@ -6,7 +6,9 @@ import com.playtube.common.PageResult;
 import com.playtube.pojo.User;
 import com.playtube.pojo.UserInfo;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface UserService {
 
@@ -66,4 +68,25 @@ public interface UserService {
      * @return
      */
     Map<String, String> refreshAccessToken(String refreshToken, Long userId) throws Exception;
+
+    /**
+     * 根据用户id获取用户
+     * @param followingId
+     * @return
+     */
+    User getUserById(Long followingId);
+
+    /**
+     * 根据关注id获取用户信息
+     * @param followingIdList
+     * @return
+     */
+    List<UserInfo> getUserInfoByIds(List<Long> followingIdList);
+
+    /**
+     * 批量获取用户信息
+     * @param userIdList
+     * @return
+     */
+    List<UserInfo> batchGetUserInfo(Set<Long> userIdList);
 }

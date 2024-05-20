@@ -3,6 +3,8 @@ package com.playtube.service.impl;
 import com.playtube.dao.AuthRoleDao;
 import com.playtube.pojo.auth.AuthRoleMenu;
 import com.playtube.pojo.auth.AuthRoleOperation;
+import com.playtube.service.AuthRoleMenuService;
+import com.playtube.service.AuthRoleOperationService;
 import com.playtube.service.AuthRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthRoleServiceImpl implements AuthRoleService {
-    private final AuthRoleOperationServiceImpl authRoleOperationService;
-    private final AuthRoleMenuServiceImpl authRoleMenuService;
+    private final AuthRoleOperationService authRoleOperationService;
+    private final AuthRoleMenuService authRoleMenuService;
     private final AuthRoleDao authRoleDao;
 
     /**

@@ -1,6 +1,6 @@
 spring:
     datasource:
-        url: jdbc:mysql://localhost:3306/playtube
+        url: jdbc:mysql://localhost:3306/playtube?serverTimezone=Shanghai&?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
         password: 123456
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -8,10 +8,11 @@ spring:
         multipart:
             max-request-size: 30MB
             max-file-size: 30MB
-    redis:
-        host: 8.130.154.240
-        port: 6379
-        password: 123456
+    data:
+        redis:
+            host: 8.130.154.240
+            password: 123456
+            port: 6379
 
 #rocketmq
 rocketmq:

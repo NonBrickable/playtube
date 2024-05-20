@@ -4,14 +4,17 @@ import com.playtube.common.PageResult;
 import com.playtube.dao.VideoDao;
 import com.playtube.common.exception.ConditionException;
 import com.playtube.pojo.*;
+import com.playtube.service.UserCoinService;
+import com.playtube.service.UserService;
 import com.playtube.service.VideoService;
 import com.playtube.util.FastDFSUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,8 +23,8 @@ import java.util.stream.Collectors;
 public class VideoServiceImpl implements VideoService {
     private final VideoDao videoDao;
     private final FastDFSUtil fastDFSUtil;
-    private final UserCoinServiceImpl userCoinService;
-    private final UserServiceImpl userService;
+    private final UserCoinService userCoinService;
+    private final UserService userService;
 
     @Transactional
     public void addVideos(Video video) {

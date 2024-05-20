@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.ToDoubleBiFunction;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class BarrageServiceImpl implements BarrageService {
     private final BarrageDao barrageDao;
     private final RedisTemplate<String, String> redisTemplate;
 
+    //TODO
     @Async
     public void asyncAddBarrage(Barrage barrage) {
         barrageDao.addBarrage(barrage);
@@ -56,6 +58,7 @@ public class BarrageServiceImpl implements BarrageService {
     }
 
 
+    //TODO 需要优化
     public void addBarrageToRedis(Barrage barrage) {
         String key = "barrage-video-" + barrage.getVideoId();
         //获取redis里关于某视频的所有弹幕

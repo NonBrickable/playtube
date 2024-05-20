@@ -4,7 +4,9 @@ import com.playtube.pojo.auth.AuthRoleMenu;
 import com.playtube.pojo.auth.AuthRoleOperation;
 import com.playtube.pojo.auth.UserAuthorities;
 import com.playtube.pojo.auth.UserRole;
+import com.playtube.service.AuthRoleService;
 import com.playtube.service.UserAuthService;
+import com.playtube.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserAuthServiceImpl implements UserAuthService {
-    private final UserRoleServiceImpl userRoleService;
-    private final AuthRoleServiceImpl authRoleService;
+    private final UserRoleService userRoleService;
+    private final AuthRoleService authRoleService;
 
     /**
      * 获取用户的所有操作权限和菜单权限

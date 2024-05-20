@@ -7,7 +7,9 @@ import com.playtube.pojo.FollowingGroup;
 import com.playtube.pojo.User;
 import com.playtube.pojo.UserFollowing;
 import com.playtube.pojo.UserInfo;
+import com.playtube.service.FollowingGroupService;
 import com.playtube.service.UserFollowingService;
+import com.playtube.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserFollowingServiceImpl implements UserFollowingService {
     private final UserFollowingDao userFollowingDao;
-    private final UserServiceImpl userService;
-    private final FollowingGroupServiceImpl followingGroupService;
+    private final UserService userService;
+    private final FollowingGroupService followingGroupService;
 
     public void addUserFollowings(UserFollowing userFollowing) {
         Long groupId = userFollowing.getGroupId();

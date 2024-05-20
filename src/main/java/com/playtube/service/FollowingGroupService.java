@@ -25,4 +25,18 @@ public interface FollowingGroupService {
      * @return
      */
     List<FollowingGroup> getFollowingGroupByUserId(Long userId);
+
+    /**
+     * 获取关注分组（通过分组类型）
+     * @param userFollowingGroupTypeDefault
+     * @return
+     */
+    FollowingGroup getByType(String userFollowingGroupTypeDefault);
+
+    /**
+     * 获取关注分组(通过分组id)
+     * @param groupId
+     * @return
+     */
+    FollowingGroup getById(Long groupId);
 }

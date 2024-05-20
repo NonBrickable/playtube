@@ -3,11 +3,14 @@ package com.playtube.common;
 import com.playtube.common.constant.RedisCacheConstant;
 import com.playtube.common.exception.ConditionException;
 import com.playtube.util.TokenUtil;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户信息传输过滤器
