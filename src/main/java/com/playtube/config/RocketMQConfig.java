@@ -52,7 +52,8 @@ public class RocketMQConfig {
             String bodyStr = new String(msg.getBody());
             UserMoments userMoments = JSONObject.toJavaObject(JSONObject.parseObject(bodyStr), UserMoments.class);
             Long userId = userMoments.getUserId();
-            List<UserFollowing> userFans = userFollowingService.getUserFans(userId);
+            //todo 这里有问题没改
+            List<UserFollowing> userFans = userFollowingService.getUserFans();
             for (UserFollowing fan : userFans) {
                 String key = "subscribed-" + fan.getUserId();//定义redis里的key
                 redisTemplate.opsForList().leftPush(key,bodyStr);

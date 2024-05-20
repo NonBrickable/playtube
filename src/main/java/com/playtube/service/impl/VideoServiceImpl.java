@@ -237,7 +237,7 @@ public class VideoServiceImpl implements VideoService {
             throw new ConditionException("参数错误");
         }
         Long userId = video.getUserId();
-        User user = userService.getUserInfo(userId);
+        User user = userService.getUserInfo();
         UserInfo userInfo = user.getUserInfo();
         Map<String,Object> result = new HashMap<>();
         result.put("userInfo",userInfo);

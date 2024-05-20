@@ -24,16 +24,14 @@ public interface UserFollowingService {
 
     /**
      * 获取关注用户信息
-     * @param userId
      * @return
      */
-    List<FollowingGroup> getUserFollowings(Long userId);
+    List<FollowingGroup> getUserFollowings();
 
 
     /**
      * 获取粉丝列表
-     * @param userId
      * @return
      */
-    List<UserFollowing> getUserFans(Long userId);
+    List<UserFollowing> getUserFans();
 }

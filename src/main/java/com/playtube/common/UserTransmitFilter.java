@@ -12,6 +12,9 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 用户信息传输过滤器
  */
@@ -22,6 +25,14 @@ public class UserTransmitFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String path = request.getRequestURI();
+        Set<String> set = new HashSet<>();
+        set.add("/register");
+        set.add("/user-dts");
+        if(set.contains(path)){
+            filterChain.doFilter(servletRequest,servletResponse);
+            return;
+        }
         String token = request.getHeader("token");
         if(redisTemplate.hasKey(RedisCacheConstant.USER_LOGOUT + token)){
             throw new ConditionException("token过期");

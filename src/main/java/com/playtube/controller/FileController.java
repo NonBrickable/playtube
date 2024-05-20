@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
     private final FileService fileService;
 
-
     /**
      * 获取文件对应的md5字符串
      * @param file
@@ -21,8 +20,7 @@ public class FileController {
      */
     @PostMapping("/md5files")
     public JsonResponse<String> getFileMD5(MultipartFile file) throws Exception {
-        String fileMD5 = fileService.getFileMD5(file);
-        return new JsonResponse<>(fileMD5);
+        return new JsonResponse<>(fileService.getFileMD5(file));
     }
 
     /**
@@ -36,7 +34,6 @@ public class FileController {
      */
     @PutMapping("/file-slices")
     public JsonResponse<String> uploadFileBySlices(MultipartFile file,String fileMd5,Integer sliceNo,Integer totalSliceNo) throws Exception {
-        String filePath = fileService.uploadFileBySlices(file,fileMd5,sliceNo,totalSliceNo);
-        return new JsonResponse<>(filePath);
+        return new JsonResponse<>(fileService.uploadFileBySlices(file,fileMd5,sliceNo,totalSliceNo));
     }
 }

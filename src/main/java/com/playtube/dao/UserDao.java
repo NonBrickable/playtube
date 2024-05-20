@@ -5,7 +5,6 @@ import com.playtube.pojo.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Mapper
@@ -17,7 +16,7 @@ public interface UserDao {
 
     Integer addUserInfo(UserInfo userInfo);
 
-    User getUserById(Long id);
+    User getUserById(Long userId);
 
     UserInfo getUserInfoById(Long userId);
 
@@ -26,10 +25,6 @@ public interface UserDao {
     Integer updateUserInfos(UserInfo userInfo);
 
     List<UserInfo> getUserInfoByUserIds(List<Long> followingIdList);
-
-    Integer pageCountUserInfos(Map<String, Object> params);
-
-    List<UserInfo> pageListUserInfos(Map<String, Object> params);
 
     List<UserInfo> batchGetUserInfo(Set<Long> userIdList);
 }

@@ -10,8 +10,13 @@ import java.util.List;
 @NoArgsConstructor
 //分页结果类
 public class PageResult<T> {
-    //总条数
+    /**
+     * 总条数
+     */
     private Integer total;
-    //当前页的数据
+
+    /**
+     * 当前页的数据
+     */
     private List<T> list;
 }

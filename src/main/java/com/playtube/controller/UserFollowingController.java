@@ -1,7 +1,6 @@
 package com.playtube.controller;
 
 import com.playtube.common.JsonResponse;
-import com.playtube.common.UserContext;
 import com.playtube.pojo.FollowingGroup;
 import com.playtube.pojo.UserFollowing;
 import com.playtube.service.FollowingGroupService;
@@ -24,8 +23,6 @@ public class UserFollowingController {
      */
     @PostMapping("/add-following")
     public JsonResponse<String> addUserFollowings(@RequestBody UserFollowing userFollowing) {
-        long userId = UserContext.getUserId();
-        userFollowing.setUserId(userId);
         userFollowingService.addUserFollowings(userFollowing);
         return JsonResponse.success();
     }
@@ -37,9 +34,7 @@ public class UserFollowingController {
      */
     @GetMapping("/following-list")
     public JsonResponse<List<FollowingGroup>> getUserFollowings() {
-        long userId = UserContext.getUserId();
-        List<FollowingGroup> list = userFollowingService.getUserFollowings(userId);
-        return new JsonResponse<>(list);
+        return new JsonResponse<>(userFollowingService.getUserFollowings());
     }
 
     /**
@@ -48,9 +43,7 @@ public class UserFollowingController {
      */
     @GetMapping("/fans-list")
     public JsonResponse<List<UserFollowing>> getUserFans() {
-        long userId = UserContext.getUserId();
-        List<UserFollowing> list = userFollowingService.getUserFans(userId);
-        return new JsonResponse<>(list);
+        return new JsonResponse<>(userFollowingService.getUserFans());
     }
 
     /**
@@ -60,10 +53,7 @@ public class UserFollowingController {
      */
     @PostMapping("/add-following-group")
     public JsonResponse<Long> addUserFollowingGroup(@RequestBody FollowingGroup followingGroup) {
-        Long userId = UserContext.getUserId();
-        followingGroup.setUserId(userId);
-        Long id = followingGroupService.addUserFollowingGroup(followingGroup);
-        return new JsonResponse<>(id);
+        return new JsonResponse<>(followingGroupService.addUserFollowingGroup(followingGroup));
     }
 
     /**
@@ -73,20 +63,17 @@ public class UserFollowingController {
      */
     @DeleteMapping("/del-following-group")
     public JsonResponse<String> deleteUserFollowingGroup(@RequestBody FollowingGroup followingGroup){
-        Long userId = UserContext.getUserId();
-        followingGroup.setUserId(userId);
         followingGroupService.deleteUserFollowingGroup(followingGroup);
-        return new JsonResponse<>("成功");
+        return JsonResponse.success();
     }
+
     /**
      * 获取关注分组
      * @return
      */
     @GetMapping("/following-group")
     public JsonResponse<List<FollowingGroup>> getFollowingGroupByUserId(){
-        Long userId = UserContext.getUserId();
-        List<FollowingGroup> followingGroupList = followingGroupService.getFollowingGroupByUserId(userId);
-        return new JsonResponse<>(followingGroupList);
+        return new JsonResponse<>(followingGroupService.getFollowingGroupByUserId());
     }
 }
 

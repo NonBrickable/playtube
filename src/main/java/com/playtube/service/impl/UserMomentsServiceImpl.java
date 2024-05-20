@@ -2,6 +2,7 @@ package com.playtube.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.playtube.common.UserContext;
 import com.playtube.common.constant.UserMomentsConstant;
 import com.playtube.dao.UserMomentsDao;
 import com.playtube.pojo.UserMoments;
@@ -28,12 +29,15 @@ public class UserMomentsServiceImpl implements UserMomentsService {
     private final RedisTemplate<String,String> redisTemplate;
 
     public void addUserMoments(UserMoments userMoments) throws Exception {
+        Long userId = UserContext.getUserId();
+        userMoments.setUserId(userId);
         userMomentsDao.addUserMoments(userMoments);
         DefaultMQProducer producer = (DefaultMQProducer) applicationContext.getBean("momentProducer");
         Message msg = new Message(UserMomentsConstant.MOMENTS_TOPIC, JSONObject.toJSONString(userMoments).getBytes(StandardCharsets.UTF_8));
         RocketMQUtil.syncSendMsg(producer,msg);
     }
-    public List<UserMoments> getUserSubscribedMoments(Long userId,Long start,Long end) {
+    public List<UserMoments> getUserSubscribedMoments(Long start,Long end) {
+        Long userId = UserContext.getUserId();
         String key ="subscribed-" + userId;
         List<String> list = redisTemplate.opsForList().range(key,start,end);
         List<UserMoments> result = new ArrayList<>();

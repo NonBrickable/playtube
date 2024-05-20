@@ -1,10 +1,9 @@
 package com.playtube.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.playtube.common.JsonResponse;
-import com.playtube.common.PageResult;
 import com.playtube.pojo.User;
 import com.playtube.pojo.UserInfo;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,7 @@ public interface UserService {
      * 获取用户信息
      * @return
      */
-    User getUserInfo(Long userId);
+    User getUserInfo();
 
     /**
      * 更新用户基本信息
@@ -40,13 +39,6 @@ public interface UserService {
     void updateUserInfos(UserInfo userInfo);
 
     /**
-     * 分页查询用户信息
-     * @param params
-     * @return
-     */
-    PageResult<UserInfo> pageListUserInfos(JSONObject params);
-
-    /**
      * 双令牌登录
      * @param user
      * @return
@@ -55,19 +47,14 @@ public interface UserService {
 
     /**
      * 登出
-     * @param accessToken
-     * @param refreshToken
-     * @param userId
      */
-    void logout(String accessToken, String refreshToken, Long userId);
+    void logout(HttpServletRequest request);
 
     /**
      * 刷新token
-     * @param refreshToken
-     * @param userId
      * @return
      */
-    Map<String, String> refreshAccessToken(String refreshToken, Long userId) throws Exception;
+    Map<String, String> refreshAccessToken(HttpServletRequest request) throws Exception;
 
     /**
      * 根据用户id获取用户

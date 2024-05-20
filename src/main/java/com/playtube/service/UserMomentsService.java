@@ -14,10 +14,9 @@ public interface UserMomentsService {
 
     /**
      * 获取动态
-     * @param userId 用户id
      * @param start 开始条数
      * @param end   结束条数
      * @return
      */
-    List<UserMoments> getUserSubscribedMoments(Long userId, Long start, Long end);
+    List<UserMoments> getUserSubscribedMoments(Long start, Long end);
 }

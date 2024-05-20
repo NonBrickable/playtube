@@ -25,7 +25,7 @@
     <select id="getUserById" parameterType="long" resultType="com.playtube.pojo.User">
         select *
         from t_user
-        where id = #{id}
+        where id = #{userId}
     </select>
     <select id="getUserInfoById" parameterType="long" resultType="com.playtube.pojo.UserInfo">
         select *
@@ -80,24 +80,6 @@
                 #{item}
             </foreach>
         </if>
-    </select>
-    <select id="pageCountUserInfos" parameterType="map" resultType="integer">
-        select count(1)
-        from t_user_info
-        where 1 = 1
-        <if test="nick!= null and nick!=''">
-            and nick like '%${nick}%'
-        </if>
-    </select>
-    <select id="pageListUserInfos" parameterType="map" resultType="com.playtube.pojo.UserInfo">
-        select *
-        from t_user_info
-        where 1 = 1
-        <if test="nick != null and nick !=''">
-            and nick like '%${nick}%'
-        </if>
-        order by id desc
-        limit #{start},#{limit}
     </select>
     <select id="batchGetUserInfo" parameterType="java.util.Set" resultType="com.playtube.pojo.UserInfo">
         select *

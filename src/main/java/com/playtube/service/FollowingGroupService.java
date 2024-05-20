@@ -21,10 +21,9 @@ public interface FollowingGroupService {
 
     /**
      * 获取用户关注列表
-     * @param userId
      * @return
      */
-    List<FollowingGroup> getFollowingGroupByUserId(Long userId);
+    List<FollowingGroup> getFollowingGroupByUserId();
 
     /**
      * 获取关注分组（通过分组类型）

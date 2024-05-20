@@ -1,5 +1,6 @@
 package com.playtube.service.impl;
 
+import com.playtube.common.UserContext;
 import com.playtube.common.constant.UserConstant;
 import com.playtube.dao.UserFollowingDao;
 import com.playtube.common.exception.ConditionException;
@@ -24,6 +25,8 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     private final FollowingGroupService followingGroupService;
 
     public void addUserFollowings(UserFollowing userFollowing) {
+        Long userId = UserContext.getUserId();
+        userFollowing.setUserId(userId);
         Long groupId = userFollowing.getGroupId();
         if (groupId == null) {
             FollowingGroup followingGroup = followingGroupService.getByType(UserConstant.USER_FOLLOWING_GROUP_TYPE_DEFAULT);
@@ -39,7 +42,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
         if (user == null) {
             throw new ConditionException("关注用户不存在");
         }
-        userFollowingDao.deleteFollowings(userFollowing.getUserId(), followingId);
+        userFollowingDao.deleteFollowings(userId, followingId);
         userFollowingDao.addFollowings(userFollowing);
     }
 
@@ -50,7 +53,8 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     //5.按照userFollowing对应的分组把UserInfo放到不同分组的List里面---转存2
 
     //获取关注列表
-    public List<FollowingGroup> getUserFollowings(Long userId) {
+    public List<FollowingGroup> getUserFollowings() {
+        Long userId = UserContext.getUserId();
         //获取关注的所有人
         List<UserFollowing> list = userFollowingDao.getUserFollowings(userId);
         List<Long> followingIdList = new ArrayList<>();
@@ -72,7 +76,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
                 }
             }
         }
-        List<FollowingGroup> followingGroupList = followingGroupService.getFollowingGroupByUserId(userId);
+        List<FollowingGroup> followingGroupList = followingGroupService.getFollowingGroupByUserId();
         //全体分组
         FollowingGroup AllFollowingGroup = new FollowingGroup();
         AllFollowingGroup.setName(UserConstant.USER_FOLLOWING_GROUP_ALL_NAME);
@@ -99,7 +103,8 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     //根据userId的list获取UserInfo的list
     //如果UserFollowing的userId和UserInfo的userId相同，就把UserInfo加入到UserFollowing中
     //获取粉丝列表,查询当前用户是否已经关注该粉丝
-    public List<UserFollowing> getUserFans(Long userId) {
+    public List<UserFollowing> getUserFans() {
+        Long userId = UserContext.getUserId();
         //获取粉丝的粗略列表
         List<UserFollowing> fansList = userFollowingDao.getUserFansList(userId);
         List<Long> userIdList = new ArrayList<>();

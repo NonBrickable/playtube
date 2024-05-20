@@ -1,8 +1,7 @@
 package com.playtube.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.playtube.common.JsonResponse;
-import com.playtube.common.PageResult;
+import com.playtube.common.UserContext;
 import com.playtube.common.constant.RedisCacheConstant;
 import com.playtube.common.constant.UserConstant;
 import com.playtube.dao.UserDao;
@@ -14,6 +13,7 @@ import com.playtube.util.MD5Util;
 import com.playtube.util.RSAUtil;
 import com.playtube.util.TokenUtil;
 import com.mysql.cj.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 注册
-     *
      * @param user
      * @return
      */
@@ -75,10 +74,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 获取用户信息
-     * @param userId 用户id
+     * @param
      * @return
      */
-    public User getUserInfo(Long userId) {
+    public User getUserInfo() {
+        Long userId = UserContext.getUserId();
         User user = userDao.getUserById(userId);
         UserInfo userInfo = userDao.getUserInfoById(userId);
         user.setUserInfo(userInfo);
@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
 
     //更新用户基本信息
     public void updateUsers(User user) throws Exception {
-        Long id = user.getId();
-        User dbUser = userDao.getUserById(id);
+        Long userId = UserContext.getUserId();
+        User dbUser = userDao.getUserById(userId);
         if (dbUser == null) {
             throw new ConditionException("用户不存在");
         }
@@ -103,6 +103,8 @@ public class UserServiceImpl implements UserService {
 
     //更新用户详细信息
     public void updateUserInfos(UserInfo userInfo) {
+        Long userId = UserContext.getUserId();
+        userInfo.setUserId(userId);
         userDao.updateUserInfos(userInfo);
     }
 
@@ -112,20 +114,6 @@ public class UserServiceImpl implements UserService {
 
     public List<UserInfo> getUserInfoByIds(List<Long> followingIdList) {
         return userDao.getUserInfoByUserIds(followingIdList);
-    }
-
-    //no-当前页码 size-当前一页有多少条数据 nick-昵称
-    public PageResult<UserInfo> pageListUserInfos(JSONObject params) {
-        Integer no = params.getInteger("no");
-        Integer size = params.getInteger("size");
-        params.put("start", (no - 1) * size);//起始页码，查第一页的话，就从数据库第0条开始查
-        params.put("limit", size);//每次查询多少条数据
-        Integer total = userDao.pageCountUserInfos(params);
-        List<UserInfo> list = new ArrayList<>();
-        if (total > 0) {
-            list = userDao.pageListUserInfos(params);
-        }
-        return new PageResult<>(total, list);
     }
 
     /**
@@ -167,20 +155,22 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 登出
-     * @param refreshToken
-     * @param userId
      */
-    public void logout(String accessToken,String refreshToken, Long userId) {
+    public void logout(HttpServletRequest request) {
+        String accessToken = request.getHeader("accessToken");
+        String refreshToken = request.getHeader("refreshToken");
+        Long userId = UserContext.getUserId();
         redisTemplate.opsForValue().set(RedisCacheConstant.USER_LOGOUT + accessToken,userId.toString(),1, TimeUnit.DAYS);
         redisTemplate.opsForValue().set(RedisCacheConstant.USER_LOGOUT + refreshToken,userId.toString(),7, TimeUnit.DAYS);
     }
 
     /**
      * 刷新accessToken
-     * @param refreshToken
      * @return
      */
-    public Map<String, String> refreshAccessToken(String refreshToken,Long userId) throws Exception {
+    public Map<String, String> refreshAccessToken(HttpServletRequest request) throws Exception {
+        String refreshToken = request.getHeader("token");
+        Long userId = UserContext.getUserId();
         redisTemplate.opsForValue().set(RedisCacheConstant.USER_LOGOUT + refreshToken,userId.toString(),7,TimeUnit.DAYS);
         String accessToken = TokenUtil.generateToken(userId);
         String newRefreshToken = TokenUtil.generateRefreshToken(userId);

@@ -54,7 +54,7 @@ playtube是一个基于SpringBoot框架的视频弹幕项目，包括视频上�
     spring:
         data:
             redis:
-                host: 8.130.154.240
+                host: localhost
                 password: 123456
                 port: 6379
     ```
