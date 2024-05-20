@@ -1,19 +1,19 @@
 package com.playtube.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.playtube.common.constant.RedisCacheConstant;
 import com.playtube.dao.BarrageDao;
 import com.playtube.pojo.Barrage;
 import com.playtube.service.BarrageService;
-import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.function.ToDoubleBiFunction;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -21,53 +21,34 @@ public class BarrageServiceImpl implements BarrageService {
     private final BarrageDao barrageDao;
     private final RedisTemplate<String, String> redisTemplate;
 
-    //TODO
-    @Async
+    @Async("asyncPoolTaskExecutor")
     public void asyncAddBarrage(Barrage barrage) {
         barrageDao.addBarrage(barrage);
     }
 
-    public List<Barrage> getBarrages(Long videoId, String startTime, String endTime) throws Exception{
-        String key = "barrage-video-" + videoId;
-        String value = redisTemplate.opsForValue().get(key);
-        List<Barrage> list;
-        if (!StringUtil.isNullOrEmpty(value)) {
-            list = JSONArray.parseArray(value, Barrage.class);
-            if (!StringUtil.isNullOrEmpty(startTime) && !StringUtil.isNullOrEmpty(endTime)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date startDate = sdf.parse(startTime);
-                Date endDate = sdf.parse(endTime);
-                List<Barrage> result = new ArrayList<>();
-                for (Barrage bar : list) {
-                    Date createTime = bar.getCreateTime();
-                    if (createTime.after(startDate) && createTime.before(endDate)) {
-                        result.add(bar);
-                    }
+    public List<Barrage> getBarrages(Long videoId) {
+        String key = RedisCacheConstant.VIDEO_BARRAGE + videoId;
+        List<String> barrageJSONList = redisTemplate.opsForList().range(key,0,-1);
+        if(!CollectionUtil.isEmpty(barrageJSONList)){
+            return JSONArray.parseArray(barrageJSONList.toString(),Barrage.class);
+        }else{
+            List<Barrage> list = barrageDao.getBarrages(videoId);
+            if(!CollectionUtil.isEmpty(list)){
+                for(Barrage barrage : list){
+                    redisTemplate.opsForList().rightPush(key,JSONObject.toJSONString(barrage));
                 }
-                list = result;
+                redisTemplate.expire(key,1,TimeUnit.DAYS);
             }
-        } else {
-            Map<String, Object> params = new HashMap<>();
-            params.put("videoId", videoId);
-            params.put("startTime", startTime);
-            params.put("endTime", endTime);
-            list = barrageDao.getBarrages(params);
-            redisTemplate.opsForValue().set(key, JSONObject.toJSONString(list));
+            return list;
         }
-        return list;
     }
 
-
-    //TODO 需要优化
     public void addBarrageToRedis(Barrage barrage) {
-        String key = "barrage-video-" + barrage.getVideoId();
+        String key = RedisCacheConstant.VIDEO_BARRAGE + barrage.getVideoId();
         //获取redis里关于某视频的所有弹幕
-        String value = redisTemplate.opsForValue().get(key);
-        List<Barrage> list = new ArrayList<>();
-        if (!StringUtil.isNullOrEmpty(value)) {
-            list = JSONArray.parseArray(value, Barrage.class);
+        redisTemplate.opsForList().rightPush(key, JSONObject.toJSONString(barrage));
+        if (redisTemplate.getExpire(key) == -1) {
+            redisTemplate.expire(key, 1, TimeUnit.DAYS);
         }
-        list.add(barrage);
-        redisTemplate.opsForValue().set(key, JSONObject.toJSONString(list));
     }
 }
