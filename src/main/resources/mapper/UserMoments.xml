@@ -9,5 +9,15 @@
         insert into t_user_moments(user_id, type, content_id, create_time)
         values (#{userId}, #{type}, #{contentId}, now())
     </insert>
+    <select id="getUserMomentsByUserId" resultType="com.playtube.pojo.UserMoments">
+        select *
+        from t_user_moments
+        where user_id in
+        <foreach collection="followingUserList" index="index" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+        order by create_time desc
+        limit 200
+    </select>
 
 </mapper>

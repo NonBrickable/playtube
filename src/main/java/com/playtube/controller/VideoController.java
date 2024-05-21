@@ -27,8 +27,6 @@ public class VideoController {
      */
     @PostMapping("/videos")
     public JsonResponse<String> addVideos(@RequestBody Video video) {
-        Long userId = UserContext.getUserId();
-        video.setUserId(userId);
         videoService.addVideos(video);
         return JsonResponse.success();
     }
@@ -44,6 +42,16 @@ public class VideoController {
     public JsonResponse<PageResult<Video>> pageListVideos(@RequestParam Integer size, @RequestParam Integer no, String area) {
         PageResult<Video> result = videoService.pageListVideos(size, no, area);
         return new JsonResponse<>(result);
+    }
+
+    /**
+     * 视频详情
+     * @param videoId
+     * @return
+     */
+    @GetMapping("/video-details")
+    public JsonResponse<Map<String,Object>> getVideoDetails(@RequestParam Long videoId){
+        return new JsonResponse<>(videoService.getVideoDetails(videoId));
     }
 
     /**
@@ -86,7 +94,6 @@ public class VideoController {
 
     /**
      * 查询视频点赞数量
-     *
      * @param videoId
      * @return
      */
@@ -103,7 +110,6 @@ public class VideoController {
 
     /**
      * 收藏视频
-     *
      * @param videoCollection
      * @return
      */
@@ -197,17 +203,6 @@ public class VideoController {
                                                                         @RequestParam Integer no,
                                                                         @RequestParam Long videoId) {
         PageResult<VideoComment> result = videoService.pageListVideoComments(size, no, videoId);
-        return new JsonResponse<>(result);
-    }
-
-    /**
-     * 视频详情
-     * @param videoId
-     * @return
-     */
-    @GetMapping("/video-details")
-    public JsonResponse<Map<String,Object>> getVideoDetails(@RequestParam Long videoId){
-        Map<String,Object> result = videoService.getVideoDetails(videoId);
         return new JsonResponse<>(result);
     }
 }

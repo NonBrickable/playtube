@@ -1,6 +1,7 @@
 package com.playtube.service.impl;
 
 import com.playtube.common.PageResult;
+import com.playtube.common.UserContext;
 import com.playtube.dao.VideoDao;
 import com.playtube.common.exception.ConditionException;
 import com.playtube.pojo.*;
@@ -28,6 +29,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Transactional
     public void addVideos(Video video) {
+        Long userId = UserContext.getUserId();
+        video.setUserId(userId);
         videoDao.addVideos(video);
         Long videoId = video.getId();
         List<VideoTag> videoTagList = video.getVideoTagList();
@@ -52,6 +55,20 @@ public class VideoServiceImpl implements VideoService {
             list = videoDao.pageListVideos(params);
         }
         return new PageResult<>(total, list);
+    }
+
+    public Map<String, Object> getVideoDetails(Long videoId) {
+        Video video = videoDao.getVideoById(videoId);
+        if(video == null){
+            throw new ConditionException("参数错误");
+        }
+        Long ownerId = video.getUserId();
+        User user = userService.getUserInfo(ownerId);
+        UserInfo userInfo = user.getUserInfo();
+        Map<String,Object> result = new HashMap<>();
+        result.put("userInfo",userInfo);
+        result.put("video",video);
+        return result;
     }
 
     public void viewVideosOnlineBySlices(HttpServletRequest request,
@@ -224,24 +241,5 @@ public class VideoServiceImpl implements VideoService {
             }
         }
         return new PageResult<>(total, list);
-    }
-
-    /**
-     * 获取视频详情
-     * @param videoId
-     * @return
-     */
-    public Map<String, Object> getVideoDetails(Long videoId) {
-        Video video = videoDao.getVideoById(videoId);
-        if(video == null){
-            throw new ConditionException("参数错误");
-        }
-        Long userId = video.getUserId();
-        User user = userService.getUserInfo();
-        UserInfo userInfo = user.getUserInfo();
-        Map<String,Object> result = new HashMap<>();
-        result.put("userInfo",userInfo);
-        result.put("video",video);
-        return result;
     }
 }

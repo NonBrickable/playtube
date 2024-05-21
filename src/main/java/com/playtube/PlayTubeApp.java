@@ -1,10 +1,8 @@
 package com.playtube;
+
 import com.playtube.controller.websocket.WebSocketService;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -21,6 +19,4 @@ public class PlayTubeApp {
         ApplicationContext app = SpringApplication.run(PlayTubeApp.class, args);
         WebSocketService.setApplicationContext(app);
     }
-
-
 }

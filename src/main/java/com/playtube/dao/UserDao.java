@@ -10,7 +10,7 @@ import java.util.Set;
 @Mapper
 public interface UserDao {
 
-    User getUserByphone(String phone);
+    User getUserByPhone(String phone);
 
     Integer addUser(User user);
 

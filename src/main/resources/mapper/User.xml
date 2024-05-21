@@ -6,7 +6,7 @@
 <!-- mapper 为根元素节点， 一个namespace对应一个dao -->
 <mapper namespace="com.playtube.dao.UserDao">
     <!--id推荐使用接口中的方法，resultType使用sql的java对象的全限定名称-->
-    <select id="getUserByphone" parameterType="java.lang.String" resultType="com.playtube.pojo.User">
+    <select id="getUserByPhone" parameterType="java.lang.String" resultType="com.playtube.pojo.User">
         select *
         from t_user
         where phone = #{phone}

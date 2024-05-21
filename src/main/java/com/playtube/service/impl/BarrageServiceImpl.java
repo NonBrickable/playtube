@@ -47,8 +47,6 @@ public class BarrageServiceImpl implements BarrageService {
         String key = RedisCacheConstant.VIDEO_BARRAGE + barrage.getVideoId();
         //获取redis里关于某视频的所有弹幕
         redisTemplate.opsForList().rightPush(key, JSONObject.toJSONString(barrage));
-        if (redisTemplate.getExpire(key) == -1) {
-            redisTemplate.expire(key, 1, TimeUnit.DAYS);
-        }
+        redisTemplate.expire(key, 1L, TimeUnit.DAYS);
     }
 }

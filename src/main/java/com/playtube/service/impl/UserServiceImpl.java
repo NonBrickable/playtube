@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNullOrEmpty(phone)) {
             throw new ConditionException("手机号不能为空");
         }
-        User dbuser = this.getUserByphone(phone);
+        User dbuser = this.getUserByPhone(phone);
         if (dbuser != null) {
             throw new ConditionException("该手机号已经注册");
         }
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
         return JsonResponse.success("成功");
     }
 
-    public User getUserByphone(String phone) {
-        return userDao.getUserByphone(phone);
+    public User getUserByPhone(String phone) {
+        return userDao.getUserByPhone(phone);
     }
 
     /**
@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
      * @param
      * @return
      */
-    public User getUserInfo() {
-        Long userId = UserContext.getUserId();
+    public User getUserInfo(Long userId) {
+        userId = Optional.ofNullable(userId).orElse(UserContext.getUserId());
         User user = userDao.getUserById(userId);
         UserInfo userInfo = userDao.getUserInfoById(userId);
         user.setUserInfo(userInfo);
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNullOrEmpty(phone)) {
             throw new ConditionException("手机号不能为空");
         }
-        User dbuser = this.getUserByphone(phone);
+        User dbuser = this.getUserByPhone(phone);
         if (dbuser == null) {
             throw new ConditionException("该用户未注册");
         }

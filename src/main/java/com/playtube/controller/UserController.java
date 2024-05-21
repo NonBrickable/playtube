@@ -42,7 +42,7 @@ public class UserController {
      */
     @GetMapping("/userInfo")
     public JsonResponse<User> getUserInfo() {
-        return new JsonResponse<>(userService.getUserInfo());
+        return new JsonResponse<>(userService.getUserInfo(null));
     }
 
     /**

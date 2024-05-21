@@ -1,6 +1,7 @@
 package com.playtube.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.playtube.common.constant.RedisCacheConstant;
 import com.playtube.common.constant.UserMomentsConstant;
 import com.playtube.controller.websocket.WebSocketService;
 import com.playtube.pojo.UserFollowing;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 //mq的配置类
 @Configuration
@@ -50,14 +52,16 @@ public class RocketMQConfig {
                 return ConsumeConcurrentlyStatus.RECONSUME_LATER;
             }
             String bodyStr = new String(msg.getBody());
-            UserMoments userMoments = JSONObject.toJavaObject(JSONObject.parseObject(bodyStr), UserMoments.class);
+            UserMoments userMoments = JSONObject.parseObject(bodyStr,UserMoments.class);
             Long userId = userMoments.getUserId();
-            //todo 这里有问题没改
-            List<UserFollowing> userFans = userFollowingService.getUserFans();
+            List<UserFollowing> userFans = userFollowingService.getUserFans(userId);
             for (UserFollowing fan : userFans) {
-                String key = "subscribed-" + fan.getUserId();//定义redis里的key
+                String key = String.format(RedisCacheConstant.MOMENTS_CACHE,fan.getUserId().toString());
                 redisTemplate.opsForList().leftPush(key,bodyStr);
-                while(redisTemplate.opsForList().size(key) > 500){
+                if(redisTemplate.getExpire(key) == -1L){
+                    redisTemplate.expire(key,1, TimeUnit.DAYS);
+                }
+                while(redisTemplate.opsForList().size(key) > 200){
                     redisTemplate.opsForList().rightPop(key);
                 }
             }

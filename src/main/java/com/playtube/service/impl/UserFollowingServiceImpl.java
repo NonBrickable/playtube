@@ -2,8 +2,8 @@ package com.playtube.service.impl;
 
 import com.playtube.common.UserContext;
 import com.playtube.common.constant.UserConstant;
-import com.playtube.dao.UserFollowingDao;
 import com.playtube.common.exception.ConditionException;
+import com.playtube.dao.UserFollowingDao;
 import com.playtube.pojo.FollowingGroup;
 import com.playtube.pojo.User;
 import com.playtube.pojo.UserFollowing;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +57,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     public List<FollowingGroup> getUserFollowings() {
         Long userId = UserContext.getUserId();
         //获取关注的所有人
-        List<UserFollowing> list = userFollowingDao.getUserFollowings(userId);
+        List<UserFollowing> list = this.getUserFollowings(userId);
         List<Long> followingIdList = new ArrayList<>();
         //抽出关注人的userId
         for (UserFollowing userFollowing : list) {
@@ -97,14 +98,17 @@ public class UserFollowingServiceImpl implements UserFollowingService {
         return result;
     }
 
+    public List<UserFollowing> getUserFollowings(Long userId){
+        return userFollowingDao.getUserFollowings(userId);
+    }
 
     //根据userId获取UserFollowing的list
     //抽取userId
     //根据userId的list获取UserInfo的list
     //如果UserFollowing的userId和UserInfo的userId相同，就把UserInfo加入到UserFollowing中
     //获取粉丝列表,查询当前用户是否已经关注该粉丝
-    public List<UserFollowing> getUserFans() {
-        Long userId = UserContext.getUserId();
+    public List<UserFollowing> getUserFans(Long userId) {
+        userId = Optional.ofNullable(userId).orElse(UserContext.getUserId());
         //获取粉丝的粗略列表
         List<UserFollowing> fansList = userFollowingDao.getUserFansList(userId);
         List<Long> userIdList = new ArrayList<>();
@@ -116,7 +120,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
             userInfoList = userService.getUserInfoByIds(userIdList);
         }
         //获取关注的粗略列表
-        List<UserFollowing> followingList = userFollowingDao.getUserFollowings(userId);
+        List<UserFollowing> followingList = this.getUserFollowings(userId);
         //关联粉丝的UserFollowing和UserInfo
         for (UserFollowing userFollowing : fansList) {
             for (UserInfo userInfo : userInfoList) {
@@ -135,7 +139,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     }
 
     public List<UserInfo >checkFollowingStatus(List<UserInfo> list, Long userId) {
-        List<UserFollowing> userFollowingList = userFollowingDao.getUserFollowings(userId);
+        List<UserFollowing> userFollowingList = this.getUserFollowings(userId);
         for(UserInfo userInfo:list){
             for(UserFollowing userFollowing:userFollowingList){
                 if(userInfo.getUserId().equals(userFollowing.getFollowingId())){

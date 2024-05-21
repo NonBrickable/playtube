@@ -23,15 +23,21 @@ public interface UserFollowingService {
     void addUserFollowings(UserFollowing userFollowing);
 
     /**
-     * 获取关注用户信息
+     * 获取关注用户信息（按照分组）
      * @return
      */
     List<FollowingGroup> getUserFollowings();
 
+    /**
+     * 获取关注用户信息
+     * @param userId
+     * @return
+     */
+    List<UserFollowing> getUserFollowings(Long userId);
 
     /**
      * 获取粉丝列表
      * @return
      */
-    List<UserFollowing> getUserFans();
+    List<UserFollowing> getUserFans(Long userId);
 }

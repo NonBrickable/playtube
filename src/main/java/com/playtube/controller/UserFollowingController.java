@@ -43,7 +43,7 @@ public class UserFollowingController {
      */
     @GetMapping("/fans-list")
     public JsonResponse<List<UserFollowing>> getUserFans() {
-        return new JsonResponse<>(userFollowingService.getUserFans());
+        return new JsonResponse<>(userFollowingService.getUserFans(null));
     }
 
     /**

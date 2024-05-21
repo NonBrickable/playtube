@@ -22,7 +22,7 @@ public interface UserService {
      * 获取用户信息
      * @return
      */
-    User getUserInfo();
+    User getUserInfo(Long userId);
 
     /**
      * 更新用户基本信息

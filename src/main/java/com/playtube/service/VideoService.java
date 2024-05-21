@@ -29,6 +29,13 @@ public interface VideoService {
     PageResult<Video> pageListVideos(Integer size, Integer no, String area);
 
     /**
+     * 视频详情
+     * @param videoId
+     * @return
+     */
+    Map<String, Object> getVideoDetails(Long videoId);
+
+    /**
      * 视频分片在线播放
      * @param request
      * @param response
@@ -108,11 +115,4 @@ public interface VideoService {
      * @return
      */
     PageResult<VideoComment> pageListVideoComments(Integer size, Integer no, Long videoId);
-
-    /**
-     * 视频详情
-     * @param videoId
-     * @return
-     */
-    Map<String, Object> getVideoDetails(Long videoId);
 }
