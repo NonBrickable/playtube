@@ -39,7 +39,7 @@
         <if test="area != null and area != ''">
             area = #{area}
         </if>
-        order by id desc
+        order by create_time desc
         limit #{start},#{limit}
     </select>
     <select id="getVideoById" parameterType="long" resultType="com.playtube.pojo.Video">

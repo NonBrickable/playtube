@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileServiceImpl implements FileService {
     private final FastDFSUtil fastDFSUtil;
     private final FileDao fileDao;
+
     public String uploadFileBySlices(MultipartFile file, String fileMd5, Integer sliceNo, Integer totalSliceNo) throws Exception {
         File dbFileMD5 = fileDao.getFileByMD5(fileMd5);
         if(dbFileMD5 != null){

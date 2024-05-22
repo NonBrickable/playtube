@@ -16,7 +16,7 @@ public class BarrageController {
     private final BarrageService barrageService;
 
     @GetMapping("/barrages")
-    public JsonResponse<List<Barrage>> getBarrages(@RequestParam Long videoId) throws Exception{
+    public JsonResponse<List<Barrage>> getBarrages(@RequestParam Long videoId) {
         return new JsonResponse<>(barrageService.getBarrages(videoId));
     }
 }

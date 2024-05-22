@@ -77,7 +77,6 @@ public class FastDFSUtil {
 
     /**
      * 断点续传
-     *
      * @param file         文件
      * @param fileMD5      文件经过MD5加密形成的唯一字符串
      * @param sliceNo      当前的分片编号，用于和totalSliceNo比较确定是不是应该返回path
@@ -133,7 +132,6 @@ public class FastDFSUtil {
 
     /**
      * 文件分片
-     *
      * @param multipartFile
      * @throws Exception
      */
@@ -204,6 +202,7 @@ public class FastDFSUtil {
         response.setHeader("Accept-Ranges","bytes");
         response.setHeader("Content-Type","video/mp4");
         response.setContentLength((int)len);
+        //206状态码表示服务器已经成功处理了部分GET请求。
         response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
         HttpUtil.get(url,headers,response);
     }
