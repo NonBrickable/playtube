@@ -9,15 +9,17 @@
         insert into t_user_moments(user_id, type, content_id, create_time)
         values (#{userId}, #{type}, #{contentId}, now())
     </insert>
-    <select id="getUserMomentsByUserId" resultType="com.playtube.pojo.UserMoments">
-        select *
-        from t_user_moments
-        where user_id in
-        <foreach collection="followingUserList" index="index" item="userId" open="(" close=")" separator=",">
-            #{userId}
-        </foreach>
-        order by create_time desc
-        limit 200
+    <select id="getFollowingMoments" parameterType="map" resultType="com.playtube.pojo.UserMoments">
+        select um.*
+        from t_user_following uf join t_user_moments um on uf.following_id = um.user_id
+        where uf.user_id = #{userId}
+        order by um.create_time desc
+        limit #{start},#{offset}
     </select>
-
+    <select id="getOneDayMoments" parameterType="long" resultType="com.playtube.pojo.UserMoments">
+        select um.*
+        from t_user_following uf join t_user_moments um on uf.following_id = um.user_id
+        where uf.user_id = #{userId} and um.create_time >= now() - interval 1 day
+        order by um.create_time desc
+    </select>
 </mapper>

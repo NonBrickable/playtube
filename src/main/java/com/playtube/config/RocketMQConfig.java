@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 //mq的配置类
 @Configuration
@@ -57,12 +56,8 @@ public class RocketMQConfig {
             List<UserFollowing> userFans = userFollowingService.getUserFans(userId);
             for (UserFollowing fan : userFans) {
                 String key = String.format(RedisCacheConstant.MOMENTS_CACHE,fan.getUserId().toString());
-                redisTemplate.opsForList().leftPush(key,bodyStr);
-                if(redisTemplate.getExpire(key) == -1L){
-                    redisTemplate.expire(key,1, TimeUnit.DAYS);
-                }
-                while(redisTemplate.opsForList().size(key) > 200){
-                    redisTemplate.opsForList().rightPop(key);
+                if(redisTemplate.hasKey(key)){
+                    redisTemplate.opsForList().leftPush(key,JSONObject.toJSONString(userMoments));
                 }
             }
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

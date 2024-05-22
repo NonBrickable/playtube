@@ -13,18 +13,16 @@ public interface UserMomentsService {
     void addUserMoments(UserMoments userMoments) throws Exception;
 
     /**
-     * 轮询获取动态
-     * @param start 开始条数
-     * @param end   结束条数
+     * 轮询获取1天内发布的动态
      * @return
      */
-    List<UserMoments> getUserSubscribedMoments(Long start, Long end);
+    List<UserMoments> getUserSubscribedMoments();
 
     /**
      * 用户主动获取动态
-     * @param start
-     * @param end
+     * @param size 每页多少条
+     * @param no 当前页数
      * @return
      */
-    List<UserMoments> getUserSubscribedMomentsActive(Long start,Long end);
+    List<UserMoments> getUserSubscribedMomentsActive(Long size,Long no);
 }

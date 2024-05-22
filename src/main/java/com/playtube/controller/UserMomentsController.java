@@ -28,22 +28,22 @@ public class UserMomentsController {
     }
 
     /**
-     * 轮询获取动态
+     * 轮询获取1天内发布的动态
      * @return
      */
     @GetMapping("/user-subscribed-moments")
-    public JsonResponse<List<UserMoments>> getUserSubscribedMoments(@RequestParam(value = "start") Long start,@RequestParam(value = "end") Long end) {
-        return new JsonResponse<>(userMomentsService.getUserSubscribedMoments(start,end));
+    public JsonResponse<List<UserMoments>> getUserSubscribedMoments() {
+        return new JsonResponse<>(userMomentsService.getUserSubscribedMoments());
     }
 
     /**
-     * 用户主动获取动态
-     * @param start
-     * @param end
+     * 用户主动获取动态-瀑布流查询
+     * @param size 每页多少条
+     * @param no 当前页数
      * @return
      */
     @GetMapping("/user-subscribed-moment-active")
-    public JsonResponse<List<UserMoments>> getUserSubscribedMomentsActive(@RequestParam(value = "start") Long start,@RequestParam(value = "end") Long end) {
-        return new JsonResponse<>(userMomentsService.getUserSubscribedMomentsActive(start,end));
+    public JsonResponse<List<UserMoments>> getUserSubscribedMomentsActive(@RequestParam(value = "size") Long size,@RequestParam(value = "no") Long no) {
+        return new JsonResponse<>(userMomentsService.getUserSubscribedMomentsActive(size,no));
     }
 }
