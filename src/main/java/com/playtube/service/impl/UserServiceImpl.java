@@ -7,7 +7,6 @@ import com.playtube.common.constant.UserConstant;
 import com.playtube.dao.UserDao;
 import com.playtube.common.exception.ConditionException;
 import com.playtube.pojo.*;
-import com.playtube.service.UserRoleService;
 import com.playtube.service.UserService;
 import com.playtube.util.MD5Util;
 import com.playtube.util.RSAUtil;
@@ -25,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserDao userDao;
-    private final UserRoleService userRoleService;
     private final RedisTemplate<String,String> redisTemplate;
 
     /**
@@ -64,7 +63,6 @@ public class UserServiceImpl implements UserService {
         userInfo.setGender(UserConstant.GENDER_MALE);
         userInfo.setBirth(UserConstant.DEFAULT_BIRTH);
         userDao.addUserInfo(userInfo);
-        userRoleService.setDefaultRole(user.getId());
         return JsonResponse.success("成功");
     }
 

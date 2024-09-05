@@ -1,15 +1,15 @@
 package com.playtube.util;
 
-import com.playtube.common.exception.ConditionException;
 import com.github.tobato.fastdfs.domain.fdfs.FileInfo;
 import com.github.tobato.fastdfs.domain.fdfs.MetaData;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.AppendFileStorageClient;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.playtube.common.exception.ConditionException;
 import io.netty.util.internal.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -24,14 +24,11 @@ import java.util.*;
  * FastDFS工具类
  */
 @Component
+@RequiredArgsConstructor
 public class FastDFSUtil {
-    // 为方便项目开发集成的简单接口
-    @Autowired
-    private FastFileStorageClient fastFileStorageClient;
-    // 支持文件续传操作的接口
-    @Autowired
+
+    private final FastFileStorageClient fastFileStorageClient;
     private AppendFileStorageClient appendFileStorageClient;
-    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     private static final String DEFAULT_GROUP = "group1";
@@ -77,6 +74,7 @@ public class FastDFSUtil {
 
     /**
      * 断点续传
+     *
      * @param file         文件
      * @param fileMD5      文件经过MD5加密形成的唯一字符串
      * @param sliceNo      当前的分片编号，用于和totalSliceNo比较确定是不是应该返回path
@@ -132,6 +130,7 @@ public class FastDFSUtil {
 
     /**
      * 文件分片
+     *
      * @param multipartFile
      * @throws Exception
      */
@@ -169,6 +168,7 @@ public class FastDFSUtil {
 
     @Value("${fdfs.http.storage-addr}")
     private String httpFdfsStorageAddr;
+
     public void viewVideosOnlineBySlices(HttpServletRequest request,
                                          HttpServletResponse response,
                                          String path) throws Exception {
@@ -177,34 +177,34 @@ public class FastDFSUtil {
         long totalFileSize = fileInfo.getFileSize();
         String url = httpFdfsStorageAddr + path;
         Enumeration<String> headerNames = request.getHeaderNames();
-        Map<String,Object> headers = new HashMap<>();
-        while(headerNames.hasMoreElements()){
+        Map<String, Object> headers = new HashMap<>();
+        while (headerNames.hasMoreElements()) {
             String header = headerNames.nextElement();
-            headers.put(header,request.getHeader(header));
+            headers.put(header, request.getHeader(header));
         }
         String rangeStr = request.getHeader("Range");
         String[] range;
-        if(StringUtil.isNullOrEmpty(rangeStr)){
+        if (StringUtil.isNullOrEmpty(rangeStr)) {
             rangeStr = "byte=0-" + (totalFileSize - 1);
         }
         range = rangeStr.split("byte=|-");
         Long begin = 0L;
-        if(range.length >= 2){
+        if (range.length >= 2) {
             begin = Long.valueOf(range[1]);
         }
         Long end = 0L;
-        if(range.length >= 3){
+        if (range.length >= 3) {
             end = Long.valueOf(range[2]);
         }
         long len = end - begin + 1;
-        String contentRange = "bytes "+ begin + "-" + end + "/" + totalFileSize;
-        response.setHeader("Content-Range",contentRange);
-        response.setHeader("Accept-Ranges","bytes");
-        response.setHeader("Content-Type","video/mp4");
-        response.setContentLength((int)len);
+        String contentRange = "bytes " + begin + "-" + end + "/" + totalFileSize;
+        response.setHeader("Content-Range", contentRange);
+        response.setHeader("Accept-Ranges", "bytes");
+        response.setHeader("Content-Type", "video/mp4");
+        response.setContentLength((int) len);
         //206状态码表示服务器已经成功处理了部分GET请求。
         response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-        HttpUtil.get(url,headers,response);
+        HttpUtil.get(url, headers, response);
     }
 
 }

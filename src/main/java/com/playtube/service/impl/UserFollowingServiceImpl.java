@@ -21,6 +21,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserFollowingServiceImpl implements UserFollowingService {
+
     private final UserFollowingDao userFollowingDao;
     private final UserService userService;
     private final FollowingGroupService followingGroupService;

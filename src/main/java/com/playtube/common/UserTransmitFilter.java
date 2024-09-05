@@ -8,8 +8,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.HashSet;
@@ -18,9 +18,11 @@ import java.util.Set;
 /**
  * 用户信息传输过滤器
  */
+@RequiredArgsConstructor
 public class UserTransmitFilter implements Filter {
-    @Autowired
-    private RedisTemplate<String,String> redisTemplate;
+
+    private final RedisTemplate<String,String> redisTemplate;
+
     @SneakyThrows
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {

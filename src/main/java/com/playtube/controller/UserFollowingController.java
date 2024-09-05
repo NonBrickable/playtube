@@ -13,11 +13,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class UserFollowingController {
+
     private final UserFollowingService userFollowingService;
     private final FollowingGroupService followingGroupService;
 
     /**
      * 新增关注用户
+     *
      * @param userFollowing
      * @return
      */
@@ -30,6 +32,7 @@ public class UserFollowingController {
 
     /**
      * 获取关注用户（按照分组）
+     *
      * @return
      */
     @GetMapping("/following-list")
@@ -39,6 +42,7 @@ public class UserFollowingController {
 
     /**
      * 获取粉丝列表
+     *
      * @return
      */
     @GetMapping("/fans-list")
@@ -48,6 +52,7 @@ public class UserFollowingController {
 
     /**
      * 添加关注分组
+     *
      * @param followingGroup
      * @return
      */
@@ -58,21 +63,23 @@ public class UserFollowingController {
 
     /**
      * 删除关注分组
+     *
      * @param followingGroup
      * @return
      */
     @DeleteMapping("/del-following-group")
-    public JsonResponse<String> deleteUserFollowingGroup(@RequestBody FollowingGroup followingGroup){
+    public JsonResponse<String> deleteUserFollowingGroup(@RequestBody FollowingGroup followingGroup) {
         followingGroupService.deleteUserFollowingGroup(followingGroup);
         return JsonResponse.success();
     }
 
     /**
      * 获取关注分组
+     *
      * @return
      */
     @GetMapping("/following-group")
-    public JsonResponse<List<FollowingGroup>> getFollowingGroupByUserId(){
+    public JsonResponse<List<FollowingGroup>> getFollowingGroupByUserId() {
         return new JsonResponse<>(followingGroupService.getFollowingGroupByUserId());
     }
 }

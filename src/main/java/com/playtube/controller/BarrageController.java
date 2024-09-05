@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class BarrageController {
+
     private final BarrageService barrageService;
 
     @GetMapping("/barrages")

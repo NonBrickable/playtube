@@ -7,12 +7,13 @@ import com.playtube.controller.websocket.WebSocketService;
 import com.playtube.pojo.UserFollowing;
 import com.playtube.pojo.UserMoments;
 import com.playtube.service.UserFollowingService;
+import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,14 +23,14 @@ import java.util.List;
 
 //mq的配置类
 @Configuration
+@RequiredArgsConstructor
 public class RocketMQConfig {
 
     @Value("${rocketmq.nameServer}")
     private String nameServerAddr;
-
-    @Autowired
+    @Resource
     private RedisTemplate<String, String> redisTemplate;
-    @Autowired
+    @Resource
     private UserFollowingService userFollowingService;
 
     @Bean("momentProducer")

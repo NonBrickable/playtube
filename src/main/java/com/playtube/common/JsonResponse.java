@@ -3,6 +3,7 @@ package com.playtube.common;
 import lombok.Data;
 @Data
 public class JsonResponse<T> {
+
     private String code;
     private String msg;
     private T data;

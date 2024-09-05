@@ -15,6 +15,7 @@ import java.util.Date;
  * 获取令牌
  */
 public class TokenUtil {
+
     private static final String ISSUER = "lvcq";
 
     /**

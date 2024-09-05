@@ -7,14 +7,15 @@ import com.playtube.common.constant.UserMomentsConstant;
 import com.playtube.pojo.Barrage;
 import com.playtube.service.BarrageService;
 import com.playtube.util.RocketMQUtil;
+import com.playtube.util.SpringContextUtil;
 import com.playtube.util.TokenUtil;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
-import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,17 +28,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @ServerEndpoint("/websocket/{videoId}/{token}")
 @Slf4j
+@RequiredArgsConstructor
 public class WebSocketService {
 
     /**
      * 1.当前连接数
      */
-    public static final ConcurrentHashMap<Long,AtomicInteger> VIDEO_ONLINE_COUNT = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<Long, AtomicInteger> VIDEO_ONLINE_COUNT = new ConcurrentHashMap<>();
 
     /**
      * 2.存储每个客户端连接的连接信息
      */
-    public static final ConcurrentHashMap<Long, ConcurrentHashMap<String,WebSocketService>> WEBSOCKET_MAP = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<Long, ConcurrentHashMap<String, WebSocketService>> WEBSOCKET_MAP = new ConcurrentHashMap<>();
 
     /**
      * 3.每个连接的session
@@ -58,21 +60,13 @@ public class WebSocketService {
      * 6.视频的id
      */
     private Long videoId;
-    /**
-     * 公用的上下文
-     */
-    private static ApplicationContext APPLICATION_CONTEXT;
-
-    public static void setApplicationContext(ApplicationContext applicationContext) {
-        WebSocketService.APPLICATION_CONTEXT = applicationContext;
-    }
 
     /**
      * 打开连接
      * session:后端存储的session
      */
     @OnOpen
-    public void openConnection(Session session, @PathParam("token") String token,@PathParam("videoId") Long videoId) {
+    public void openConnection(Session session, @PathParam("token") String token, @PathParam("videoId") Long videoId) {
         log.info("打开连接");
         System.out.println("打开连接");
         try {
@@ -82,17 +76,17 @@ public class WebSocketService {
         this.sessionId = session.getId();
         this.session = session;
         this.videoId = videoId;
-        if(WEBSOCKET_MAP.containsKey(videoId)){
-            ConcurrentHashMap<String,WebSocketService> map = WEBSOCKET_MAP.get(videoId);
-            if(!map.containsKey(sessionId)){
+        if (WEBSOCKET_MAP.containsKey(videoId)) {
+            ConcurrentHashMap<String, WebSocketService> map = WEBSOCKET_MAP.get(videoId);
+            if (!map.containsKey(sessionId)) {
                 VIDEO_ONLINE_COUNT.get(videoId).getAndIncrement();
             }
-            map.put(sessionId,this);
-        }else{
-            ConcurrentHashMap<String,WebSocketService> map = new ConcurrentHashMap<>();
-            map.put(sessionId,this);
-            WEBSOCKET_MAP.put(videoId,map);
-            VIDEO_ONLINE_COUNT.put(videoId,new AtomicInteger(1));
+            map.put(sessionId, this);
+        } else {
+            ConcurrentHashMap<String, WebSocketService> map = new ConcurrentHashMap<>();
+            map.put(sessionId, this);
+            WEBSOCKET_MAP.put(videoId, map);
+            VIDEO_ONLINE_COUNT.put(videoId, new AtomicInteger(1));
         }
         log.info("用户连接成功" + sessionId + "当前在线人数" + VIDEO_ONLINE_COUNT.get(videoId).get());
         //告诉前端连接成功
@@ -108,13 +102,13 @@ public class WebSocketService {
      */
     @OnClose
     public void closeConnection() {
-        if(WEBSOCKET_MAP.containsKey(videoId)){
-            ConcurrentHashMap<String,WebSocketService> map = WEBSOCKET_MAP.get(videoId);
-            if(map.containsKey(sessionId)){
+        if (WEBSOCKET_MAP.containsKey(videoId)) {
+            ConcurrentHashMap<String, WebSocketService> map = WEBSOCKET_MAP.get(videoId);
+            if (map.containsKey(sessionId)) {
                 map.remove(sessionId);
-                if(VIDEO_ONLINE_COUNT.containsKey(videoId)){
+                if (VIDEO_ONLINE_COUNT.containsKey(videoId)) {
                     int count = VIDEO_ONLINE_COUNT.get(videoId).decrementAndGet();
-                    if(count <= 0){
+                    if (count <= 0) {
                         VIDEO_ONLINE_COUNT.remove(videoId);
                     }
                 }
@@ -125,6 +119,7 @@ public class WebSocketService {
 
     /**
      * 有消息通讯时调用
+     *
      * @param message
      */
     @OnMessage
@@ -136,19 +131,19 @@ public class WebSocketService {
                 for (Map.Entry<String, WebSocketService> entry : WEBSOCKET_MAP.get(videoId).entrySet()) {
                     WebSocketService webSocketService = entry.getValue();
                     //获取生产者
-                    DefaultMQProducer defaultMQProducer = (DefaultMQProducer) APPLICATION_CONTEXT.getBean("barrageProducer");
+                    DefaultMQProducer defaultMQProducer = (DefaultMQProducer) SpringContextUtil.getBean("barrageProducer");
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("message", message);
                     jsonObject.put("videoId", videoId.toString());
                     jsonObject.put("sessionId", webSocketService.getSessionId());
-                    Message msg = new Message(UserMomentsConstant.BARRAGE_TOPIC,jsonObject.toJSONString().getBytes(StandardCharsets.UTF_8));
+                    Message msg = new Message(UserMomentsConstant.BARRAGE_TOPIC, jsonObject.toJSONString().getBytes(StandardCharsets.UTF_8));
                     RocketMQUtil.asyncSendMsg(defaultMQProducer, msg);
                 }
                 //2.如果不是访客，则保存到数据库
                 if (userId != null) {
                     Barrage barrage = JSONObject.parseObject(message, Barrage.class);
                     barrage.setUserId(userId);
-                    BarrageService barrageService = (BarrageService) APPLICATION_CONTEXT.getBean("barrageService");
+                    BarrageService barrageService = (BarrageService) SpringContextUtil.getBean("barrageService");
                     //异步保存到mysql数据库中
                     barrageService.asyncAddBarrage(barrage);
                     //同步保存到Redis中
@@ -173,6 +168,7 @@ public class WebSocketService {
 
     /**
      * 给前端发送消息
+     *
      * @param message
      * @throws IOException
      */
@@ -183,12 +179,12 @@ public class WebSocketService {
     //定时向前端推送在线人数
     @Scheduled(fixedRate = 5000)
     public void noticeOnlineCount() throws IOException {
-        if(videoId == null || ObjectUtil.isEmpty(WEBSOCKET_MAP.get(videoId))) return;
+        if (videoId == null || ObjectUtil.isEmpty(WEBSOCKET_MAP.get(videoId))) return;
         for (Map.Entry<String, WebSocketService> entry : WebSocketService.WEBSOCKET_MAP.get(videoId).entrySet()) {
             WebSocketService webSocketService = entry.getValue();
             if (webSocketService.getSession().isOpen()) {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("onlineCount",VIDEO_ONLINE_COUNT.get(videoId).get());
+                jsonObject.put("onlineCount", VIDEO_ONLINE_COUNT.get(videoId).get());
                 webSocketService.sendMessage(jsonObject.toJSONString());
             }
         }

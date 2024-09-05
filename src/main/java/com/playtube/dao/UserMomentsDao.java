@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface UserMomentsDao {
+
     Integer addUserMoments(UserMoments userMoments);
 
     List<UserMoments> getFollowingMoments(Map<String, Long> params);

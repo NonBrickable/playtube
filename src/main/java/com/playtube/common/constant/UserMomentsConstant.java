@@ -1,6 +1,8 @@
 package com.playtube.common.constant;
 
-//用户动态常量
+/**
+ * 用户动态常量
+ */
 public class UserMomentsConstant {
 
     public static final String MOMENTS_GROUP = "MomentsGroup";

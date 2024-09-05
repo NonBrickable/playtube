@@ -1,6 +1,10 @@
 package com.playtube.common.constant;
 
+/**
+ * 用户相关常量
+ */
 public class UserConstant {
+
     public static final String GENDER_MALE = "0";
 
     public static final String GENDER_FEMALE = "1";

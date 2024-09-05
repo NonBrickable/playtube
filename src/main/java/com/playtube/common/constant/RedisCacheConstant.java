@@ -1,5 +1,8 @@
 package com.playtube.common.constant;
 
+/**
+ * Redis常量
+ */
 public class RedisCacheConstant {
 
     /**

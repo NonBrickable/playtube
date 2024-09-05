@@ -12,8 +12,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
- * RSA加密
- * 非对称加密，有公钥和私钥之分，公钥用于数据加密，私钥用于数据解密。加密结果可逆
+ * RSA加密 公钥加密，私钥解密。加密结果可逆
  * 公钥一般提供给外部进行使用，私钥需要放置在服务器端保证安全性。
  * 特点：加密安全性很高，但是加密速度较慢
  */

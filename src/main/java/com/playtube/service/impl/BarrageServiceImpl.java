@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class BarrageServiceImpl implements BarrageService {
+
     private final BarrageDao barrageDao;
     private final RedisTemplate<String, String> redisTemplate;
 

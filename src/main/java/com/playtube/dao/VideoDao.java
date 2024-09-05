@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Mapper
 public interface VideoDao {
+
     Integer addVideos(Video video);
 
     Integer batchAddVideoTags(List<VideoTag> videoTagList);

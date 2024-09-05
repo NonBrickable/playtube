@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
+
     private final VideoDao videoDao;
     private final FastDFSUtil fastDFSUtil;
     private final UserCoinService userCoinService;

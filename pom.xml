@@ -108,7 +108,11 @@
             <artifactId>hutool-all</artifactId>
             <version>${hutool-all.vesion}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>9.3</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserCoinServiceImpl implements UserCoinService {
+
     private final UserCoinDao userCoinDao;
 
     public Long getUserCoinsAmount(Long userId) {

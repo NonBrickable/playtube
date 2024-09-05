@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController(value = "/moment")
 @RequiredArgsConstructor
 public class UserMomentsController {
+
     private final UserMomentsService userMomentsService;
 
     /**
@@ -19,9 +20,7 @@ public class UserMomentsController {
      * @return
      * @throws Exception
      */
-//    @ControllerLimitedRole(limitedRoleCodeList = {AuthRoleConstant.ROLE_LV0})
-//    @DataLimited
-    @PostMapping("/add-moment")
+    @PostMapping("/add")
     public JsonResponse<String> addUserMoments(@RequestBody UserMoments userMoments) throws Exception {
         userMomentsService.addUserMoments(userMoments);
         return JsonResponse.success();
@@ -31,7 +30,7 @@ public class UserMomentsController {
      * 轮询获取1天内发布的动态
      * @return
      */
-    @GetMapping("/user-subscribed-moments")
+    @GetMapping("/batch")
     public JsonResponse<List<UserMoments>> getUserSubscribedMoments() {
         return new JsonResponse<>(userMomentsService.getUserSubscribedMoments());
     }
@@ -42,7 +41,7 @@ public class UserMomentsController {
      * @param no 当前页数
      * @return
      */
-    @GetMapping("/user-subscribed-moment-active")
+    @GetMapping("/batch/active")
     public JsonResponse<List<UserMoments>> getUserSubscribedMomentsActive(@RequestParam(value = "size") Long size,@RequestParam(value = "no") Long no) {
         return new JsonResponse<>(userMomentsService.getUserSubscribedMomentsActive(size,no));
     }
